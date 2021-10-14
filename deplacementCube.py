@@ -1,5 +1,6 @@
-import pygame 
-  
+import pygame
+
+#fait par alexandre
 pygame.init()
 
   
