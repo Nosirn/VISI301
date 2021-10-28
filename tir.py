@@ -10,15 +10,10 @@ fenetre = pygame.display.set_mode((800,600))
 fin = True
 
 
-def shoot(self):
-        mouse_pos = pygame.mouse.get_pos()
-        projectile_temp = Projectile(mouse_pos[0], mouse_pos[1])
-
-
 class Projectile(pygame.sprite.Sprite):
     def init(self, posx_end, posy_end):
         pygame.sprite.Sprite.init(self) 
-        self.image = pygame.image.load("feu.png")
+        self.image = pygame.image.load("sprite\feu.png")
         self.posx_end = posx_end
         self.posy_end = posy_end
         self.step = 5
@@ -46,4 +41,5 @@ while fin :
             fin = False
             pygame.quit()
 
-    shoot()
+    mouse_pos = pygame.mouse.get_pos()
+    projectile_temp = Projectile(mouse_pos[0], mouse_pos[1])
