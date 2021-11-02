@@ -1,10 +1,10 @@
 import pygame
 
-pygame.init()
+class player(pygame.sprite.Sprite):
 
-class player():
-    playerIMG = pygame.image.load('images/soldier.png')
-    playerX = 370
-    playerY = 480
-    playerX_change = 0
-    playerY_change = 0
+    def __init__(self):
+        super().__init__()
+        self.sprite_sheet = pygame.image.load('images/soldier.png')
+
+
+
