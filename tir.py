@@ -1,5 +1,4 @@
 import pygame
-import math
 
 #Initialisation pygame
 pygame.init()
@@ -7,8 +6,7 @@ pygame.init()
 #Initialisation de la fenêtre
 fenetre = pygame.display.set_mode((800,600))
 
-#Boucle du jeu
-fin = True
+
 
 
 class Projectile(pygame.sprite.Sprite):

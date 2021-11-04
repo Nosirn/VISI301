@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="2">
  <tileset firstgid="1" source="map_tileset/grass.tsx"/>
  <tileset firstgid="281" source="map_tileset/tileset.tsx"/>
  <layer id="1" name="background" width="50" height="50">
@@ -110,4 +110,9 @@
 127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127
 </data>
  </layer>
+ <objectgroup id="3" name="Objects">
+  <object id="1" name="player" x="381.99" y="334.654">
+   <point/>
+  </object>
+ </objectgroup>
 </map>
