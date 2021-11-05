@@ -1,8 +1,10 @@
 import pygame
 import pytmx
 import pyscroll
+import random
 
 from player import Player
+from enemies import Enemy
 
 
 class Game:
@@ -25,9 +27,24 @@ class Game:
         player_position = tmx_data.get_object_by_name("player")
         self.player = Player(player_position.x, player_position.y)
 
+        # generate enemy
+
+        enemy_position_x = random.randint(300, 500)
+        enemy_position_y = random.randint(300, 500)
+        self.enemy = Enemy(enemy_position_x, enemy_position_y)
+
+        # Collision
+
+        self.walls = []
+
+        for obj in tmx_data.objects:
+            if obj.type == "collision":
+                self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+
         # calques
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=3)
         self.group.add(self.player)
+        self.group.add(self.enemy)
 
         # Title and icon
         pygame.display.set_caption("CMI-zombie")
@@ -46,6 +63,14 @@ class Game:
         elif pressed[pygame.K_RIGHT]:
             self.player.move_right()
 
+    def update(self):
+        self.group.update()
+
+        # Test collision
+        for sprite in self.group.sprites():
+            if sprite.feet.collidelist(self.walls) > -1:
+                sprite.move_back()
+
     def run(self):
 
         clock = pygame.time.Clock()
@@ -54,8 +79,10 @@ class Game:
         running = True
         while running:
 
+            self.player.save_location()
             self.handle_input()
-            self.group.update()
+            self.update()
+            self.group.center(self.player.rect)
             self.group.center(self.player.rect)
             self.group.draw(self.screen)
             pygame.display.flip()

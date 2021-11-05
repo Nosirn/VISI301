@@ -1,13 +1,13 @@
 import pygame
 
 
-class Player(pygame.sprite.Sprite):
+class Enemy(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         super().__init__()
-        self.sprite_sheet = pygame.image.load('images/player.png')
-        self.image = self.get_image(46, 25)
-        self.image.set_colorkey([255, 255, 255])
+        self.sprite_sheet = pygame.image.load('images/soldier.png')
+        self.image = self.get_image(0, 0)
+        self.image.set_colorkey([0, 0, 0])
         self.rect = self.image.get_rect()
         self.position = [x, y]
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
@@ -34,6 +34,6 @@ class Player(pygame.sprite.Sprite):
         self.feet.midbottom = self.rect.midbottom
 
     def get_image(self, x, y):
-        image = pygame.Surface([45, 65])
-        image.blit(self.sprite_sheet, (0, 0), (x, y, 45, 65))
+        image = pygame.Surface([64, 64])
+        image.blit(self.sprite_sheet, (0, 0), (x, y, 64, 64))
         return image
