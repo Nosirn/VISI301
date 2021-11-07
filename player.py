@@ -13,6 +13,9 @@ class Player(pygame.sprite.Sprite):
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
         self.old_position = self.position.copy()
 
+    def get_position(self):
+        return [self.position[0], self.position[1]]
+
     def save_location(self): self.old_position = self.position.copy()
 
     def move_right(self): self.position[0] += 3
