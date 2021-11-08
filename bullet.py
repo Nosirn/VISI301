@@ -1,5 +1,5 @@
 import pygame
-
+from PIL import Image
 
 class Bullet(pygame.sprite.Sprite):
 
@@ -40,3 +40,9 @@ class Bullet(pygame.sprite.Sprite):
         image = pygame.Surface([16, 16])
         image.blit(self.sprite_sheet, (0, 0), (x, y, 16, 16))
         return image
+
+    def rotate(self, img, rect, angle):
+        self.rot_image = pygame.transform.rotate(img, angle)
+        return self.rot_image
+
+

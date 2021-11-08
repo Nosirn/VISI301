@@ -3,6 +3,7 @@ import pytmx
 import pyscroll
 import math
 
+
 from bullet import Bullet
 from player import Player
 from enemies import Enemy
@@ -66,13 +67,13 @@ class Game:
 
         if pressed[pygame.K_UP]:
             self.player.move_up()
-        elif pressed[pygame.K_DOWN]:
+        if pressed[pygame.K_DOWN]:
             self.player.move_down()
-        elif pressed[pygame.K_LEFT]:
+        if pressed[pygame.K_LEFT]:
             self.player.move_left()
-        elif pressed[pygame.K_RIGHT]:
+        if pressed[pygame.K_RIGHT]:
             self.player.move_right()
-        elif pygame.mouse.get_pressed()[0]:
+        if pygame.mouse.get_pressed()[0]:
             if self.bullet.bullet_state == "ready":
                 self.px, self.py = pygame.mouse.get_pos()
                 #print(self.px, self.py)
@@ -82,25 +83,41 @@ class Game:
 
     def fire_bullet(self, x, y):
         self.bullet.bullet_state = "fire"
-        self.group.add(self.bullet)
-        self.bullet.position = [x, y]
-        #print(self.bullet.bullet_state)
-        #angle de la droite (clic player)
+
+        # angle de la droite (clic player)
         self.radians = math.atan2(self.py - self.player.get_position()[1], self.px - self.player.get_position()[0])
         self.dx = math.cos(self.radians)
         self.dy = math.sin(self.radians)
-        #print(math.cos(self.radians))
-        #print(math.sin(self.radians))
+        print(math.cos(self.radians))
+        print(round(math.cos(self.radians)))
+        print(math.sin(self.radians))
+        print(round(math.sin(self.radians)))
+
+        self.bullet.image = pygame.transform.rotate(self.bullet.image, self.radians)
+        self.bullet.position = [x, y]
+        self.group.add(self.bullet)
+        print(self.bullet.bullet_state)
 
     def bullet_movement(self):
         if self.bullet.bullet_state == "fire":
-            if self.bullet.position[0] < 200 or self.bullet.position[0] > 600 or self.bullet.position[1] < 200 or self.bullet.position[1] > 600:
+            if self.bullet.position[0] < 0 or self.bullet.position[0] > 800 or self.bullet.position[1] < 0 or self.bullet.position[1] > 800:
                 self.bullet.bullet_state = "ready"
                 self.group.remove(self.bullet)
                 print(self.group)
+                print(self.bullet.bullet_state)
             else:
-                #self.bullet.position += [self.dx, self.dy]     #problème de changement de position
-                pass
+                if round(self.dx) == 1:
+                    self.bullet.move_right()
+                    print("d")
+                if round(self.dx) == -1:
+                    self.bullet.move_left()
+                    print("g")
+                if round(self.dy) == 1:
+                    self.bullet.move_down()
+                    print("h")
+                if round(self.dy) == -1:
+                    self.bullet.move_up()
+                    print("b")
 
     def follow_player(self):
 
@@ -143,13 +160,14 @@ class Game:
             self.group.draw(self.screen)
 
 
-
+            # update the full display surface to the screen
             pygame.display.flip()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
 
+            #nombre de FPS
             clock.tick(60)
 
         pygame.quit()
