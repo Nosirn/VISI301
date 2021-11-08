@@ -142,6 +142,28 @@ class Game:
             if sprite.feet.collidelist(self.walls) > -1:
                 sprite.move_back()
 
+    def zombie_touche(self):
+        #on prend les coordonnees de la balle et du zombie, si c'est les mêmes, le zombie est touché
+
+        touche = False
+        Xzomb = self.enemy.get_position()[0]
+        Yzomb = self.enemy.get_position()[1]
+
+        Xbullet = self.bullet.get_position()[0]
+        Ybullet = self.bullet.get_position()[1]
+
+        if Xzomb == Xbullet and Yzomb == Ybullet :
+            touche = True
+
+        return touche
+
+
+
+
+    def disparition_sprite(self):
+        #permet de faire disparaitre les sprites sous certaines conditions
+    pass
+
     def run(self):
         clock = pygame.time.Clock()
 
