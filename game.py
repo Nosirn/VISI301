@@ -145,6 +145,8 @@ class Game:
     def zombie_touche(self):
         #on prend les coordonnees de la balle et du zombie, si c'est les mêmes, le zombie est touché
 
+        #ne marche pas, renvoit toujours false, il faut essayer en mettant une 'hitbox' sur le sprite en faisant un pygame.rect
+
         touche = False
         Xzomb = self.enemy.get_position()[0]
         Yzomb = self.enemy.get_position()[1]
@@ -155,14 +157,19 @@ class Game:
         if Xzomb == Xbullet and Yzomb == Ybullet :
             touche = True
 
+        print(touche)
+
         return touche
-
-
 
 
     def disparition_sprite(self):
         #permet de faire disparaitre les sprites sous certaines conditions
-    pass
+        if self.zombie_touche() :
+            self.group.remove(self.bullet)
+            self.group.remove(self.enemy)
+
+        if self.bullet.position[0] < 0 or self.bullet.position[0] > 800 or self.bullet.position[1] < 0 or self.bullet.position[1] > 800:
+            self.group.remove(self.bullet)
 
     def run(self):
         clock = pygame.time.Clock()
@@ -177,9 +184,12 @@ class Game:
             self.bullet.save_location()
             self.handle_input()
             self.bullet_movement()
+            self.zombie_touche()
+
             self.update()
             self.group.center(self.player.rect)
             self.group.draw(self.screen)
+
 
 
             # update the full display surface to the screen
