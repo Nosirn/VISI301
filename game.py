@@ -147,7 +147,7 @@ class Game:
 
         #ne marche pas, renvoit toujours false, il faut essayer en mettant une 'hitbox' sur le sprite en faisant un pygame.rect
 
-        touche = False
+        touche = True
         Xzomb = self.enemy.get_position()[0]
         Yzomb = self.enemy.get_position()[1]
 
@@ -185,6 +185,7 @@ class Game:
             self.handle_input()
             self.bullet_movement()
             self.zombie_touche()
+            self.disparition_sprite()
 
             self.update()
             self.group.center(self.player.rect)
