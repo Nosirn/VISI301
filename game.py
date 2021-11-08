@@ -80,7 +80,7 @@ class Game:
                 #print(self.group)
                 #print(self.player.get_position()[0], self.player.get_position()[1])
                 self.fire_bullet(self.player.get_position()[0], self.player.get_position()[1])
-
+# à mettre dans le fichier bullet
     def fire_bullet(self, x, y):
         self.bullet.bullet_state = "fire"
 
