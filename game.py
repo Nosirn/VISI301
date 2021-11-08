@@ -3,7 +3,6 @@ import pytmx
 import pyscroll
 import math
 
-
 from bullet import Bullet
 from player import Player
 from enemies import Enemy
@@ -28,7 +27,7 @@ class Game:
         tmx_data = pytmx.util_pygame.load_pygame('map.tmx')
         map_data = pyscroll.data.TiledMapData(tmx_data)
         map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
-        # map_layer.zoom = 2
+        #map_layer.zoom = 2
 
         # generate player
         player_position = tmx_data.get_object_by_name("player")
@@ -76,11 +75,12 @@ class Game:
         if pygame.mouse.get_pressed()[0]:
             if self.bullet.bullet_state == "ready":
                 self.px, self.py = pygame.mouse.get_pos()
-                #print(self.px, self.py)
-                #print(self.group)
-                #print(self.player.get_position()[0], self.player.get_position()[1])
+                # print(self.px, self.py)
+                # print(self.group)
+                # print(self.player.get_position()[0], self.player.get_position()[1])
                 self.fire_bullet(self.player.get_position()[0], self.player.get_position()[1])
-# à mettre dans le fichier bullet
+
+    # à mettre dans le fichier bullet
     def fire_bullet(self, x, y):
         self.bullet.bullet_state = "fire"
 
@@ -93,19 +93,14 @@ class Game:
         print(math.sin(self.radians))
         print(round(math.sin(self.radians)))
 
-        self.bullet.image = pygame.transform.rotate(self.bullet.image, self.radians)
         self.bullet.position = [x, y]
         self.group.add(self.bullet)
         print(self.bullet.bullet_state)
 
     def bullet_movement(self):
         if self.bullet.bullet_state == "fire":
-            if self.bullet.position[0] < 0 or self.bullet.position[0] > 800 or self.bullet.position[1] < 0 or self.bullet.position[1] > 800:
-                self.bullet.bullet_state = "ready"
-                self.group.remove(self.bullet)
-                print(self.group)
-                print(self.bullet.bullet_state)
-            else:
+            if not (self.bullet.position[0] < 0 or self.bullet.position[0] > 800 or self.bullet.position[1] < 0 or \
+                    self.bullet.position[1] > 800):
                 if round(self.dx) == 1:
                     self.bullet.move_right()
                     print("d")
@@ -114,10 +109,10 @@ class Game:
                     print("g")
                 if round(self.dy) == 1:
                     self.bullet.move_down()
-                    print("h")
+                    print("b")
                 if round(self.dy) == -1:
                     self.bullet.move_up()
-                    print("b")
+                    print("h")
 
     def follow_player(self):
 
@@ -134,6 +129,37 @@ class Game:
         self.enemy.position[1] += self.enemy.change_position[1]
         self.enemy.change_position = [0, 0]
 
+    def zombie_touche(self):
+        # on prend les coordonnees de la balle et du zombie, si c'est les mêmes, le zombie est touché
+
+        # ne marche pas, renvoit toujours false, il faut essayer en mettant une 'hitbox' sur le sprite en faisant un pygame.rect
+
+        touche = False
+        # renvoie 1 si les deux sprite en parametre se touche
+        if pygame.sprite.collide_rect(self.bullet, self.enemy) == 1 and self.bullet in self.group:
+            touche = True
+        # Xzomb = self.enemy.get_position()[0]
+        # Yzomb = self.enemy.get_position()[1]
+
+        # Xbullet = self.bullet.get_position()[0]
+        # Ybullet = self.bullet.get_position()[1]
+
+        # if Xzomb == Xbullet and Yzomb == Ybullet :
+        #   touche = True
+        return touche
+
+    def disparition_sprite(self):
+        # permet de faire disparaitre les sprites sous certaines conditions
+        if self.zombie_touche():
+            self.group.remove(self.bullet)
+            self.bullet.bullet_state = "ready"
+            self.group.remove(self.enemy)
+
+        if self.bullet.position[0] < 0 or self.bullet.position[0] > 800 or self.bullet.position[1] < 0 or \
+                self.bullet.position[1] > 800:
+            self.bullet.bullet_state = "ready"
+            self.group.remove(self.bullet)
+
     def update(self):
         self.group.update()
 
@@ -141,35 +167,6 @@ class Game:
         for sprite in self.group.sprites():
             if sprite.feet.collidelist(self.walls) > -1:
                 sprite.move_back()
-
-    def zombie_touche(self):
-        #on prend les coordonnees de la balle et du zombie, si c'est les mêmes, le zombie est touché
-
-        #ne marche pas, renvoit toujours false, il faut essayer en mettant une 'hitbox' sur le sprite en faisant un pygame.rect
-
-        touche = True
-        Xzomb = self.enemy.get_position()[0]
-        Yzomb = self.enemy.get_position()[1]
-
-        Xbullet = self.bullet.get_position()[0]
-        Ybullet = self.bullet.get_position()[1]
-
-        if Xzomb == Xbullet and Yzomb == Ybullet :
-            touche = True
-
-        print(touche)
-
-        return touche
-
-
-    def disparition_sprite(self):
-        #permet de faire disparaitre les sprites sous certaines conditions
-        if self.zombie_touche() :
-            self.group.remove(self.bullet)
-            self.group.remove(self.enemy)
-
-        if self.bullet.position[0] < 0 or self.bullet.position[0] > 800 or self.bullet.position[1] < 0 or self.bullet.position[1] > 800:
-            self.group.remove(self.bullet)
 
     def run(self):
         clock = pygame.time.Clock()
@@ -187,11 +184,9 @@ class Game:
             self.zombie_touche()
             self.disparition_sprite()
 
-            self.update()
             self.group.center(self.player.rect)
             self.group.draw(self.screen)
-
-
+            self.update()
 
             # update the full display surface to the screen
             pygame.display.flip()
@@ -200,7 +195,7 @@ class Game:
                 if event.type == pygame.QUIT:
                     running = False
 
-            #nombre de FPS
+            # nombre de FPS
             clock.tick(60)
 
         pygame.quit()
