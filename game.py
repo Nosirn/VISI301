@@ -132,24 +132,17 @@ class Game:
     def zombie_touche(self):
         # on prend les coordonnees de la balle et du zombie, si c'est les mêmes, le zombie est touché
 
-        # ne marche pas, renvoit toujours false, il faut essayer en mettant une 'hitbox' sur le sprite en faisant un pygame.rect
-
         touche = False
         # renvoie 1 si les deux sprite en parametre se touche
         if pygame.sprite.collide_rect(self.bullet, self.enemy) == 1 and self.bullet in self.group:
             touche = True
-        # Xzomb = self.enemy.get_position()[0]
-        # Yzomb = self.enemy.get_position()[1]
 
-        # Xbullet = self.bullet.get_position()[0]
-        # Ybullet = self.bullet.get_position()[1]
-
-        # if Xzomb == Xbullet and Yzomb == Ybullet :
-        #   touche = True
         return touche
 
     def disparition_sprite(self):
         # permet de faire disparaitre les sprites sous certaines conditions
+
+
         if self.zombie_touche():
             self.group.remove(self.bullet)
             self.bullet.bullet_state = "ready"
