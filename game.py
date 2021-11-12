@@ -38,15 +38,15 @@ class Game:
         self.enemy = Enemy(enemy_position.x, enemy_position.y)
 
         # generate bullet
-        self.bullet = Bullet(50, 50)
+        self.bullet = Bullet(self.player.get_position()[0], self.player.get_position()[1])
 
         # var for bullet movement
 
-        self.px = 0
-        self.py = 0
-        self.radians = 0
-        self.dx = 0
-        self.dy = 0
+        #self.px = 0
+        #self.py = 0
+        #self.radians = 0
+        #self.dx = 0
+        #self.dy = 0
 
         # Collision
 
@@ -78,41 +78,36 @@ class Game:
                 # print(self.px, self.py)
                 # print(self.group)
                 # print(self.player.get_position()[0], self.player.get_position()[1])
-                self.fire_bullet(self.player.get_position()[0], self.player.get_position()[1])
+                self.bullet_movement()
 
     # à mettre dans le fichier bullet
-    def fire_bullet(self, x, y):
-        self.bullet.bullet_state = "fire"
+    def vector_bullet(self):
 
-        # angle de la droite (clic player)
-        self.radians = math.atan2(self.py - self.player.get_position()[1], self.px - self.player.get_position()[0])
-        self.dx = math.cos(self.radians)
-        self.dy = math.sin(self.radians)
-        print(math.cos(self.radians))
-        print(round(math.cos(self.radians)))
-        print(math.sin(self.radians))
-        print(round(math.sin(self.radians)))
+        posBullet = self.bullet
 
-        self.bullet.position = [x, y]
-        self.group.add(self.bullet)
-        print(self.bullet.bullet_state)
+        posMouse = pygame.mouse.get_pos()
+
+        vect = [ posMouse[0] - posBullet[0] , posMouse[1] - posBullet[1] ]
+
+        print(vect)
+        return vect
+
+
 
     def bullet_movement(self):
-        if self.bullet.bullet_state == "fire":
-            if not (self.bullet.position[0] < 0 or self.bullet.position[0] > 800 or self.bullet.position[1] < 0 or \
-                    self.bullet.position[1] > 800):
-                if round(self.dx) == 1:
-                    self.bullet.move_right()
-                    print("d")
-                if round(self.dx) == -1:
-                    self.bullet.move_left()
-                    print("g")
-                if round(self.dy) == 1:
-                    self.bullet.move_down()
-                    print("b")
-                if round(self.dy) == -1:
-                    self.bullet.move_up()
-                    print("h")
+
+        vecteur = self.vector_bullet()
+
+        pX = self.bullet.position[0]
+        pY = self.bullet.position[1]
+
+        pX += vecteur[0]
+        pY += vecteur[1]
+
+        print(pX)
+        print(pY)
+
+        self.bullet.position = [ pX , pY ]
 
     def follow_player(self):
 
@@ -129,6 +124,7 @@ class Game:
         self.enemy.position[1] += self.enemy.change_position[1]
         self.enemy.change_position = [0, 0]
 
+
     def zombie_touche(self):
         # on prend les coordonnees de la balle et du zombie, si c'est les mêmes, le zombie est touché
 
@@ -139,9 +135,9 @@ class Game:
 
         return touche
 
+
     def disparition_sprite(self):
         # permet de faire disparaitre les sprites sous certaines conditions
-
 
         if self.zombie_touche():
             self.group.remove(self.bullet)
@@ -174,7 +170,6 @@ class Game:
             self.bullet.save_location()
             self.handle_input()
             self.bullet_movement()
-            self.zombie_touche()
             self.disparition_sprite()
 
             self.group.center(self.player.rect)

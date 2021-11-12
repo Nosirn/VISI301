@@ -42,3 +42,5 @@ class Enemy(pygame.sprite.Sprite):
         image = pygame.Surface([64, 64])
         image.blit(self.sprite_sheet, (0, 0), (x, y, 64, 64))
         return image
+
+
