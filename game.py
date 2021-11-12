@@ -64,13 +64,13 @@ class Game:
     def handle_input(self):
         pressed = pygame.key.get_pressed()
 
-        if pressed[pygame.K_UP]:
+        if pressed[pygame.K_z]:
             self.player.move_up()
-        if pressed[pygame.K_DOWN]:
+        if pressed[pygame.K_s]:
             self.player.move_down()
-        if pressed[pygame.K_LEFT]:
+        if pressed[pygame.K_q]:
             self.player.move_left()
-        if pressed[pygame.K_RIGHT]:
+        if pressed[pygame.K_d]:
             self.player.move_right()
         if pygame.mouse.get_pressed()[0]:
             if self.bullet.bullet_state == "ready":
@@ -83,15 +83,16 @@ class Game:
     # à mettre dans le fichier bullet
     def vector_bullet(self):
 
-        posBullet = self.bullet
+        posBulletX, posBulletY = self.bullet.position[0], self.bullet.position[1] ,
 
-        posMouse = pygame.mouse.get_pos()
 
-        vect = [ posMouse[0] - posBullet[0] , posMouse[1] - posBullet[1] ]
+        posMouseX , posMouseY = pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]
+
+
+        vect = [ posMouseX - posBulletX, posMouseY - posBulletY ]
 
         print(vect)
         return vect
-
 
 
     def bullet_movement(self):
