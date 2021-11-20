@@ -19,13 +19,12 @@ class Bullet(pygame.sprite.Sprite):
 
     def save_location(self): self.old_position = self.position.copy()
 
-    def move_right(self): self.position[0] += 3
+    def move_X(self, x):
+        self.position[0] += x
 
-    def move_left(self): self.position[0] -= 3
+    def move_Y(self, y):
+        self.position[1] += y
 
-    def move_up(self): self.position[1] -= 3
-
-    def move_down(self): self.position[1] += 3
 
     def update(self):
         self.rect.topleft = self.position
