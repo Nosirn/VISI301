@@ -33,6 +33,7 @@ class Game:
         player_position = tmx_data.get_object_by_name("player")
         self.player = Player(player_position.x, player_position.y)
 
+
         # generate enemy
         enemy_position = tmx_data.get_object_by_name("spawn_zombie1")  # Faire spawn aléatoirement
         self.enemy = Enemy(enemy_position.x, enemy_position.y)
@@ -59,6 +60,10 @@ class Game:
         self.group.add(self.player)
         self.group.add(self.enemy)
 
+        # generate bullet
+        self.bullet = Bullet(player_position.x, player_position.y)
+
+
     def handle_input(self):
         pressed = pygame.key.get_pressed()
 
@@ -72,46 +77,43 @@ class Game:
             self.player.move_right()
         if pygame.mouse.get_pressed()[0]:
             if self.bullet.bullet_state == "ready":
-                self.px, self.py = pygame.mouse.get_pos()
-                self.bullet.bullet_state = "fire"
-                # print(self.px, self.py)
+                px, py = pygame.mouse.get_pos()
+                #self.bullet.bullet_state = "fire"
+                print(px,py)
                 # print(self.group)
                 # print(self.player.get_position()[0], self.player.get_position()[1])
-                self.bullet_movement(self.px,self.py)
+                self.bullet.move(px,py)
+                self.bullet.update()
 
     # à mettre dans le fichier bullet
 
-    # generate bullet
+    #
+    # def vector_bullet(self, X, Y):
+    #     posBulletX, posBulletY = self.bullet.position[0], self.bullet.position[1] ,
+    #
+    #     vect = [ X - posBulletX, Y - posBulletY ]
+    #     print(vect)
+    #
+    #
+    #     return vect
 
-    # self.bullet = Bullet(self.px, self.py)
-
-
-    def vector_bullet(self, X, Y):
-        posBulletX, posBulletY = self.bullet.position[0], self.bullet.position[1] ,
-
-        vect = [ X - posBulletX, Y - posBulletY ]
-        print(vect)
-
-
-        return vect
-
-    def bullet_movement(self, X, Y):
-
-
-        vecteur = self.vector_bullet(X,Y)
-        X = vecteur[0]
-
-        Y = vecteur[1]
-
-        if self.bullet.bullet_state == "fire" :
-            if not (self.bullet.position[0] < 0 or self.bullet.position[0] > 800 or self.bullet.position[1] < 0 or self.bullet.position[1] > 800):
-
-                self.bullet.move_X(X)
-                self.bullet.move_Y(Y)
-
-                self.group.add(self.bullet)
-
-        print(self.bullet.bullet_state)
+    # def bullet_movement(self, X, Y):
+    #
+    #
+    #     vecteur = self.vector_bullet(X,Y)
+    #     X = vecteur[0]
+    #
+    #     Y = vecteur[1]
+    #
+    #     if self.bullet.bullet_state == "fire" :
+    #         if not (self.bullet.position[0] < 0 or self.bullet.position[0] > 800 or self.bullet.position[1] < 0 or self.bullet.position[1] > 800):
+    #
+    #             self.bullet.move_X(X)
+    #             self.bullet.move_Y(Y)
+    #
+    #             self.group.add(self.bullet)
+    #
+    #     print(self.bullet.bullet_state)
 
     def follow_player(self):
 

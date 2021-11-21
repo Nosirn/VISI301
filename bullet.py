@@ -1,5 +1,6 @@
 import pygame
 from PIL import Image
+import math
 
 class Bullet(pygame.sprite.Sprite):
 
@@ -19,11 +20,21 @@ class Bullet(pygame.sprite.Sprite):
 
     def save_location(self): self.old_position = self.position.copy()
 
-    def move_X(self, x):
-        self.position[0] += x
+    def move(self, cibleX, cibleY):
+        x, y = self.position
+        #caclul l'angle en radian
+        angle = math.atan2(cibleY - y, cibleX - x)
+        print("Angle en degrées :", int(angle*180/math.pi))
+        newX = math.cos(angle)
+        newY = math.sin(angle)
 
-    def move_Y(self, y):
-        self.position[1] += y
+        self.position[0] = self.position[0] + int(newX)
+        self.position[1] = self.position[1] + int(newY)
+        print(self.position)
+
+
+
+
 
 
     def update(self):
