@@ -6,6 +6,7 @@ import math
 from bullet import Bullet
 from player import Player
 from enemies import Enemy
+from pieces import Piece
 
 
 class Game:
@@ -39,6 +40,9 @@ class Game:
 
         # generate bullet
         self.bullet = Bullet(self.player.get_position()[0], self.player.get_position()[1])
+
+        #generate Piece
+        self.piece = Piece(0, 0)
 
         # var for bullet movement
 
@@ -91,7 +95,7 @@ class Game:
         else:
             i = abs(self.vector[1])
 
-        self.vector = [self.vector[0]/i, self.vector[1]/i]
+        self.vector = [self.vector[0] / i, self.vector[1] / i]
         print(self.vector)
 
     # à mettre dans le fichier bullet
@@ -121,8 +125,8 @@ class Game:
             pY = self.bullet.position[1]
             # print(self.bullet.position[1])
 
-            pX += bulletspeed*self.vector[0]
-            pY += bulletspeed*self.vector[1]
+            pX += bulletspeed * self.vector[0]
+            pY += bulletspeed * self.vector[1]
 
             self.bullet.position = [pX, pY]
 
@@ -151,13 +155,17 @@ class Game:
 
         return touche
 
+    #def spawn_piece(self):
+        #self.group.add(self.piece)
+
     def disparition_sprite(self):
         # permet de faire disparaitre les sprites sous certaines conditions
 
-        # if self.zombie_touche():
-        #   self.group.remove(self.bullet)
-        #  self.bullet.bullet_state = "ready"
-        # self.group.remove(self.enemy)
+        if self.zombie_touche():
+            self.group.remove(self.bullet)
+            self.bullet.bullet_state = "ready"
+            self.group.remove(self.enemy)
+            #self.spawn_piece()
 
         if self.bullet.position[0] < 0 or self.bullet.position[0] > 800 or self.bullet.position[1] < 0 or \
                 self.bullet.position[1] > 800:
