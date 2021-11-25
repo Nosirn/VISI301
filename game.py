@@ -27,25 +27,26 @@ class Game:
         tmx_data = pytmx.util_pygame.load_pygame('map.tmx')
         map_data = pyscroll.data.TiledMapData(tmx_data)
         map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
-        #map_layer.zoom = 2
+        # map_layer.zoom = 2
 
         # generate player
         player_position = tmx_data.get_object_by_name("player")
         self.player = Player(player_position.x, player_position.y)
 
-
         # generate enemy
         enemy_position = tmx_data.get_object_by_name("spawn_zombie1")  # Faire spawn aléatoirement
         self.enemy = Enemy(enemy_position.x, enemy_position.y)
 
+        # generate bullet
+        self.bullet = Bullet(self.player.get_position()[0], self.player.get_position()[1])
 
         # var for bullet movement
 
-        #self.px = 0
-        #self.py = 0
-        #self.radians = 0
-        #self.dx = 0
-        #self.dy = 0
+        # self.px = 0
+        # self.py = 0
+        # self.radians = 0
+        # self.dx = 0
+        # self.dy = 0
 
         # Collision
 
@@ -60,10 +61,6 @@ class Game:
         self.group.add(self.player)
         self.group.add(self.enemy)
 
-        # generate bullet
-        self.bullet = Bullet(player_position.x, player_position.y)
-
-
     def handle_input(self):
         pressed = pygame.key.get_pressed()
 
@@ -77,43 +74,57 @@ class Game:
             self.player.move_right()
         if pygame.mouse.get_pressed()[0]:
             if self.bullet.bullet_state == "ready":
-                px, py = pygame.mouse.get_pos()
-                #self.bullet.bullet_state = "fire"
-                print(px,py)
-                # print(self.group)
-                # print(self.player.get_position()[0], self.player.get_position()[1])
-                self.bullet.move(px,py)
-                self.bullet.update()
+                self.px, self.py = pygame.mouse.get_pos()
+                self.fire_bullet()
+
+    def fire_bullet(self):
+
+        # On place la balle sur le joueur et on la fait apparaitre
+        self.bullet.position = [self.player.position[0], self.player.position[1]]
+        self.bullet.bullet_state = "fire"  # On passe l'état du tir à fires
+        self.vector = self.vector_bullet()  # on recupère le vecteur de direction du tir
+        self.group.add(self.bullet)
+
+        # on reduit le vecteur au maximum
+        if abs(self.vector[0]) > abs(self.vector[1]):
+            i = abs(self.vector[0])
+        else:
+            i = abs(self.vector[1])
+
+        self.vector = [self.vector[0]/i, self.vector[1]/i]
+        print(self.vector)
 
     # à mettre dans le fichier bullet
+    def vector_bullet(self):
 
-    #
-    # def vector_bullet(self, X, Y):
-    #     posBulletX, posBulletY = self.bullet.position[0], self.bullet.position[1] ,
-    #
-    #     vect = [ X - posBulletX, Y - posBulletY ]
-    #     print(vect)
-    #
-    #
-    #     return vect
+        # On recupère la position de la balle
+        posBulletX = self.bullet.position[0]
+        posBulletY = self.bullet.position[1]
 
-    # def bullet_movement(self, X, Y):
-    #
-    #
-    #     vecteur = self.vector_bullet(X,Y)
-    #     X = vecteur[0]
-    #
-    #     Y = vecteur[1]
-    #
-    #     if self.bullet.bullet_state == "fire" :
-    #         if not (self.bullet.position[0] < 0 or self.bullet.position[0] > 800 or self.bullet.position[1] < 0 or self.bullet.position[1] > 800):
-    #
-    #             self.bullet.move_X(X)
-    #             self.bullet.move_Y(Y)
-    #
-    #             self.group.add(self.bullet)
-    #
-    #     print(self.bullet.bullet_state)
+        # On recupère les coordonées du clic
+        posMouseX = pygame.mouse.get_pos()[0]
+        posMouseY = pygame.mouse.get_pos()[1]
+
+        # On calcul le vecteur de direction de la balle
+        vect = [posMouseX - posBulletX, posMouseY - posBulletY]
+
+        print(vect)
+        return vect
+
+    def bullet_movement(self):
+
+        bulletspeed = 6
+
+        if self.bullet.bullet_state == "fire":
+            pX = self.bullet.position[0]
+            # print(self.bullet.position[0])
+            pY = self.bullet.position[1]
+            # print(self.bullet.position[1])
+
+            pX += bulletspeed*self.vector[0]
+            pY += bulletspeed*self.vector[1]
+
+            self.bullet.position = [pX, pY]
 
     def follow_player(self):
 
@@ -130,7 +141,6 @@ class Game:
         self.enemy.position[1] += self.enemy.change_position[1]
         self.enemy.change_position = [0, 0]
 
-
     def zombie_touche(self):
         # on prend les coordonnees de la balle et du zombie, si c'est les mêmes, le zombie est touché
 
@@ -141,20 +151,19 @@ class Game:
 
         return touche
 
-#
     def disparition_sprite(self):
         # permet de faire disparaitre les sprites sous certaines conditions
 
-        if self.zombie_touche():
-            self.group.remove(self.bullet)
-            self.bullet.bullet_state = "ready"
-            self.group.remove(self.enemy)
+        # if self.zombie_touche():
+        #   self.group.remove(self.bullet)
+        #  self.bullet.bullet_state = "ready"
+        # self.group.remove(self.enemy)
 
         if self.bullet.position[0] < 0 or self.bullet.position[0] > 800 or self.bullet.position[1] < 0 or \
                 self.bullet.position[1] > 800:
-            self.bullet.bullet_state = "ready"
             self.group.remove(self.bullet)
-#
+            self.bullet.bullet_state = "ready"
+
     def update(self):
         self.group.update()
 
@@ -175,6 +184,7 @@ class Game:
             self.player.save_location()
             self.bullet.save_location()
             self.handle_input()
+            self.bullet_movement()
             self.disparition_sprite()
 
             self.group.center(self.player.rect)

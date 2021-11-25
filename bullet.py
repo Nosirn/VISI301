@@ -2,6 +2,7 @@ import pygame
 from PIL import Image
 import math
 
+
 class Bullet(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
@@ -22,20 +23,15 @@ class Bullet(pygame.sprite.Sprite):
 
     def move(self, cibleX, cibleY):
         x, y = self.position
-        #caclul l'angle en radian
+        # caclul l'angle en radian
         angle = math.atan2(cibleY - y, cibleX - x)
-        print("Angle en degrées :", int(angle*180/math.pi))
+        print("Angle en degrées :", int(angle * 180 / math.pi))
         newX = math.cos(angle)
         newY = math.sin(angle)
 
         self.position[0] = self.position[0] + int(newX)
         self.position[1] = self.position[1] + int(newY)
         print(self.position)
-
-
-
-
-
 
     def update(self):
         self.rect.topleft = self.position
@@ -54,5 +50,3 @@ class Bullet(pygame.sprite.Sprite):
     def rotate(self, img, rect, angle):
         self.rot_image = pygame.transform.rotate(img, angle)
         return self.rot_image
-
-

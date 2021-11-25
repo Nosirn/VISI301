@@ -121,7 +121,7 @@
   <object id="15" name="player" x="388" y="268">
    <point/>
   </object>
-  <object id="16" name="spawn_zombie1" x="304" y="401">
+  <object id="16" name="spawn_zombie1" x="302" y="405">
    <point/>
   </object>
   <object id="17" name="spawn_zombie" x="774" y="27">
