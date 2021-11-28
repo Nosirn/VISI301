@@ -11,11 +11,10 @@ class Piece(pygame.sprite.Sprite):
        radius : Taille de la pièce (Défaut : 1)
     '''
 
-    def __init__(self,color, x, y):
-        pygame.sprite.Sprite.__init__()
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
 
         self.image = pygame.Surface([x, y])
-        self.image.fill(color)
         self.rect = self.image.get_rect()
 
     def modifierPosition(self):

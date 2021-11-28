@@ -121,28 +121,28 @@
   <object id="15" name="player" x="388" y="268">
    <point/>
   </object>
-  <object id="16" name="spawn_zombie1" x="302" y="405">
+  <object id="16" name="spawn_zombie1" x="52" y="77">
    <point/>
   </object>
-  <object id="17" name="spawn_zombie" x="774" y="27">
+  <object id="17" name="spawn_zombie3" x="773" y="55">
    <point/>
   </object>
-  <object id="18" name="spawn_zombie" x="771" y="779">
+  <object id="18" name="spawn_zombie5" x="771" y="779">
    <point/>
   </object>
-  <object id="19" name="spawn_zombie" x="26" y="778">
+  <object id="19" name="spawn_zombie7" x="26" y="778">
    <point/>
   </object>
-  <object id="20" name="spawn_zombie" x="378" y="32">
+  <object id="20" name="spawn_zombie2" x="379" y="50">
    <point/>
   </object>
-  <object id="21" name="spawn_zombie" x="27" y="399">
+  <object id="21" name="spawn_zombie8" x="27" y="399">
    <point/>
   </object>
-  <object id="22" name="spawn_zombie" x="767" y="406">
+  <object id="22" name="spawn_zombie4" x="767" y="397">
    <point/>
   </object>
-  <object id="23" name="spawn_zombie" x="425" y="773">
+  <object id="23" name="spawn_zombie6" x="425" y="773">
    <point/>
   </object>
  </objectgroup>
