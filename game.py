@@ -44,14 +44,6 @@ class Game:
         #generate Piece
         self.piece = Piece(0, 0)
 
-        # var for bullet movement
-
-        # self.px = 0
-        # self.py = 0
-        # self.radians = 0
-        # self.dx = 0
-        # self.dy = 0
-
         # Collision
 
         self.walls = []
