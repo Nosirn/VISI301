@@ -36,13 +36,7 @@ class Game:
 
         # generate enemy
         enemy_position = tmx_data.get_object_by_name("spawn_zombie1")  # Faire spawn aléatoirement
-        #self.enemy = Enemy(enemy_position.x, enemy_position.y)
-        self.enemy = {}
-        for i in range(1, 8):
-            temp = tmx_data.get_object_by_name("spawn_zombie"+str(i))
-            self.enemy[i] = Enemy(temp.x, temp.y)
-
-        print(self.enemy)
+        self.enemy = Enemy(enemy_position.x, enemy_position.y)
 
         # generate bullet
         self.bullet = Bullet(self.player.get_position()[0], self.player.get_position()[1])
@@ -61,7 +55,7 @@ class Game:
         # calques
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=4)
         self.group.add(self.player)
-        self.group.add(self.enemy[1])
+        self.group.add(self.enemy)
 
     def handle_input(self):
         pressed = pygame.key.get_pressed()
@@ -128,6 +122,20 @@ class Game:
 
             self.bullet.position = [pX, pY]
 
+    def follow_player(self):
+
+        if self.enemy.get_position()[0] > self.player.get_position()[0]:
+            self.enemy.move_left()
+        elif self.enemy.get_position()[0] < self.player.get_position()[0]:
+            self.enemy.move_right()
+        if self.enemy.get_position()[1] > self.player.get_position()[1]:
+            self.enemy.move_up()
+        elif self.enemy.get_position()[1] < self.player.get_position()[1]:
+            self.enemy.move_down()
+
+        self.enemy.position[0] += self.enemy.change_position[0]
+        self.enemy.position[1] += self.enemy.change_position[1]
+        self.enemy.change_position = [0, 0]
 
     def zombie_touche(self):
         # on prend les coordonnees de la balle et du zombie, si c'est les mêmes, le zombie est touché
@@ -150,16 +158,11 @@ class Game:
             self.bullet.bullet_state = "ready"
             self.group.remove(self.enemy)
             #self.spawn_piece()
-            self.spawn_zombie()
 
         if self.bullet.position[0] < 0 or self.bullet.position[0] > 800 or self.bullet.position[1] < 0 or \
                 self.bullet.position[1] > 800:
             self.group.remove(self.bullet)
             self.bullet.bullet_state = "ready"
-
-    def spawn_zombie(self):
-        return 0
-
 
     def update(self):
         self.group.update()
@@ -176,15 +179,16 @@ class Game:
         running = True
         while running:
 
-            self.group.center(self.player.rect)
-            self.group.draw(self.screen)
-            self.zombie_deplacement()
+            self.follow_player()
             self.enemy.save_location()
             self.player.save_location()
             self.bullet.save_location()
             self.handle_input()
             self.bullet_movement()
             self.disparition_sprite()
+
+            self.group.center(self.player.rect)
+            self.group.draw(self.screen)
             self.update()
 
             # update the full display surface to the screen
