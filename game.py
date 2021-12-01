@@ -84,7 +84,8 @@ class Game:
     def fire_bullet(self):
 
         # On place la balle sur le joueur et on la fait apparaitre
-        self.bullet.position = [self.player.position[0], self.player.position[1]]
+        self.bullet.reset_position([self.player.position[0], self.player.position[1]])
+
         self.bullet.bullet_state = "fire"  # On passe l'état du tir à fires
         self.vector = self.vector_bullet()  # on recupère le vecteur de direction du tir
         self.group.add(self.bullet)
