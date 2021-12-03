@@ -44,6 +44,14 @@ class Game:
         #generate Piece
         self.piece = Piece(0, 0)
 
+        # var for bullet movement
+
+        # self.px = 0
+        # self.py = 0
+        # self.radians = 0
+        # self.dx = 0
+        # self.dy = 0
+
         # Collision
 
         self.walls = []
@@ -76,7 +84,8 @@ class Game:
     def fire_bullet(self):
 
         # On place la balle sur le joueur et on la fait apparaitre
-        self.bullet.position = [self.player.position[0], self.player.position[1]]
+        self.bullet.reset_position([self.player.position[0], self.player.position[1]])
+
         self.bullet.bullet_state = "fire"  # On passe l'état du tir à fires
         self.vector = self.vector_bullet()  # on recupère le vecteur de direction du tir
         self.group.add(self.bullet)

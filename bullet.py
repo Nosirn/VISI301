@@ -7,14 +7,17 @@ class Bullet(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         super().__init__()
-        self.position = [x, y]
+        self.reset_position( [x,y] )
         self.sprite_sheet = pygame.image.load('images/round_bullet.png')
         self.image = self.get_image(0, 0)
         self.image.set_colorkey([255, 255, 255])
         self.rect = self.image.get_rect()
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
-        self.old_position = self.position.copy()
         self.bullet_state = "ready"
+
+    def reset_position(self, pos):
+        self.position = pos.copy()
+        self.old_position = self.position.copy()
 
     def get_position(self):
         return [self.position[0], self.position[1]]
