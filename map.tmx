@@ -118,7 +118,7 @@
   <object id="9" type="collision" x="368" y="358.667" width="31" height="72.6667"/>
   <object id="10" type="collision" x="398.333" y="373.667" width="16.6667" height="42"/>
   <object id="11" type="collision" x="352.333" y="374.667" width="16.3333" height="41.3333"/>
-  <object id="15" name="player" x="388" y="268">
+  <object id="15" name="player" x="380" y="202">
    <point/>
   </object>
   <object id="16" name="spawn_zombie1" x="52" y="77">

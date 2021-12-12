@@ -1,5 +1,5 @@
 import pygame
-
+from bullet import Bullet
 
 class Player(pygame.sprite.Sprite):
 
@@ -40,3 +40,10 @@ class Player(pygame.sprite.Sprite):
         image = pygame.Surface([45, 65])
         image.blit(self.sprite_sheet, (0, 0), (x, y, 45, 65))
         return image
+    
+    def create_bullet(self):
+        return Bullet(self.position[0], self.position[1])
+    
+    
+    
+    
