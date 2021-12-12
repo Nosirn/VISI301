@@ -64,7 +64,7 @@ class Game:
         # calques
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=4)
         self.group.add(self.player)
-        #self.group.add(self.enemy)
+        self.group.add(self.enemy)
         self.bullet_group = pygame.sprite.Group()
         
 

@@ -66,27 +66,6 @@ class Bullet(pygame.sprite.Sprite):
         #print(self.vector)
         return self.vector
 
-
-
-    # def fire_bullet(self):
-    #
-    #     # On place la balle sur le joueur et on la fait apparaitre
-    #     self.bullet.reset_position([self.player.position[0], self.player.position[1]])
-    #
-    #     self.bullet.bullet_state = "fire"  # On passe l'état du tir à fires
-    #     self.vector = self.vector_bullet()  # on recupère le vecteur de direction du tir
-    #     self.group.add(self.bullet)
-    #
-    #     # on reduit le vecteur au maximum
-    #     if abs(self.vector[0]) > abs(self.vector[1]):
-    #         i = abs(self.vector[0])
-    #     else:
-    #         i = abs(self.vector[1])
-    #
-    #     self.vector = [self.vector[0] / i, self.vector[1] / i]
-    #     print(self.vector)
-
-    # à mettre dans le fichier bullet
     def vector_bullet(self):
 
         # On recupère la position de la balle
@@ -101,18 +80,3 @@ class Bullet(pygame.sprite.Sprite):
         vect = [posMouseX - posBulletX, posMouseY - posBulletY]
         #print(vect)
         return vect
-
-    # def bullet_movement(self):
-    #
-    #     bulletspeed = 6
-    #
-    #     if self.bullet.bullet_state == "fire":
-    #         px = self.bullet.position[0]
-    #         # print(self.bullet.position[0])
-    #         py = self.bullet.position[1]
-    #         # print(self.bullet.position[1])
-    #
-    #         px += bulletspeed * self.vector[0]
-    #         py += bulletspeed * self.vector[1]
-    #
-    #         self.bullet.position = [pX, pY]
