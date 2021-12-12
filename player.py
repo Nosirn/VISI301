@@ -5,13 +5,21 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         super().__init__()
-        self.sprite_sheet = pygame.image.load('images/player.png')
-        self.image = self.get_image(46, 25)
-        self.image.set_colorkey([255, 255, 255])
+        self.sprite_sheet = pygame.image.load('images/spritejoueur.png')
+        self.image = self.get_image(0, 0)
+        self.image.set_colorkey([0, 0, 0])
         self.rect = self.image.get_rect()
         self.position = [x, y]
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
         self.old_position = self.position.copy()
+        self.images = {'hand' : self.get_image(0,0),
+                    'pistol' : self.get_image(56,0),
+                    'smg' : self.get_image(112,0)}
+        self.munition = 50
+        self.capacity = 10
+        self.weapon = "pistol"
+        self.listweapon = ["hand", "pistol", "smg"]
+
 
     def get_position(self):
         return [self.position[0], self.position[1]]
@@ -37,13 +45,16 @@ class Player(pygame.sprite.Sprite):
         self.feet.midbottom = self.rect.midbottom
 
     def get_image(self, x, y):
-        image = pygame.Surface([45, 65])
-        image.blit(self.sprite_sheet, (0, 0), (x, y, 45, 65))
+        image = pygame.Surface([55, 95])
+        image.blit(self.sprite_sheet, (0, 0), (x, y, 55, 95))
         return image
     
     def create_bullet(self):
         return Bullet(self.position[0], self.position[1])
     
+    def change_weapon(self, skin):
+        self.image = self.images[skin]
+        self.image.set_colorkey([0, 0, 0])
     
-    
-    
+    def rotate(self):
+        

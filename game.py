@@ -64,7 +64,7 @@ class Game:
         # calques
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=4)
         self.group.add(self.player)
-        self.group.add(self.enemy)
+        #self.group.add(self.enemy)
         self.bullet_group = pygame.sprite.Group()
         
 
@@ -81,6 +81,12 @@ class Game:
             self.player.move_right()
         if pygame.mouse.get_pressed()[0]:
            self.bullet_group.add(self.player.create_bullet())
+        if pressed[pygame.K_c]:
+            self.player.change_weapon('hand')
+        if pressed[pygame.K_a]:
+            self.player.change_weapon('pistol')
+        if pressed[pygame.K_f]:
+            self.player.change_weapon('smg')
            
            
            
