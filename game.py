@@ -29,7 +29,7 @@ class Game:
         tmx_data = pytmx.util_pygame.load_pygame('map.tmx')
         map_data = pyscroll.data.TiledMapData(tmx_data)
         map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
-        # map_layer.zoom = 2
+        #map_layer.zoom = 2
 
         # generate player
         player_position = tmx_data.get_object_by_name("player")
@@ -41,7 +41,7 @@ class Game:
 
         # generate enemy
         #enemy_position = tmx_data.get_object_by_name("spawn_zombie1")  # Faire spawn aléatoirement
-        #self.enemy = Enemy(enemy_position.x, enemy_position.y)
+        self.enemy = Enemy(45,45)
 
         # generate bullet 
         #self.bullet = Bullet(self.player.get_position()[0], self.player.get_position()[1])
@@ -70,7 +70,11 @@ class Game:
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=4)
         self.group.add(self.player)
         self.bullet_group = pygame.sprite.Group()
+
+
         self.zombie_group = pygame.sprite.Group()
+
+        self.zombie_group.add(self.enemy)
         
 
     def handle_input(self):
@@ -107,6 +111,7 @@ class Game:
     def update(self):
         self.group.update()
         self.bullet_group.update()
+        self.zombie_group.update()
 
         # Test collision
         for sprite in self.group.sprites():
@@ -126,6 +131,7 @@ class Game:
             self.group.center(self.player.rect)
             self.group.draw(self.screen)
             self.bullet_group.draw(self.screen)
+            self.zombie_group.draw(self.screen)
             self.UI.render(self.screen)
 
 

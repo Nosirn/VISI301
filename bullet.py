@@ -11,6 +11,7 @@ class Bullet(pygame.sprite.Sprite):
         self.pos = [x, y]
         self.sprite_sheet = pygame.image.load('images/round_bullet.png')
         self.image = self.get_image(0, 0)
+        #self.image = pygame.transform.scale(self.image, (20,20))
         self.image.set_colorkey([255, 255, 255])
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]

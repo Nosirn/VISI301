@@ -64,7 +64,6 @@ class Player(pygame.sprite.Sprite):
         print(self.magazine)
         return Bullet(self.position[0], self.position[1])
 
-
     def change_weapon(self, skin):
         '''change le skin selon l'arme'''
         self.image = self.images[skin]
@@ -74,7 +73,6 @@ class Player(pygame.sprite.Sprite):
         '''capacité du chargeur'''
         self.capacity_max = 7
         self.magazine = 0
-
 
     def smg(self):
         '''capacité du chargeur'''
