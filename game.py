@@ -80,6 +80,7 @@ class Game:
             self.player.move_left()
         if pressed[pygame.K_d]:
             self.player.move_right()
+
         if pygame.mouse.get_pressed()[0]:
             print(self.player.can_shoot())
             if self.player.can_shoot():
@@ -141,8 +142,6 @@ class Game:
 
             self.group.draw(self.screen)
             self.bullet_group.draw(self.screen)
-
-            
 
 
             # update the full display surface to the screen
