@@ -3,11 +3,11 @@ import pytmx
 import pyscroll
 import math
 
-
 from bullet import Bullet
 from player import Player
 from enemies import Enemy
 from pieces import Piece
+from userinterface import UserInterface
 
 
 class Game:
@@ -34,6 +34,10 @@ class Game:
         # generate player
         player_position = tmx_data.get_object_by_name("player")
         self.player = Player(player_position.x, player_position.y)
+
+        # user interface
+
+        self.UI = UserInterface()
 
         # generate enemy
         enemy_position = tmx_data.get_object_by_name("spawn_zombie1")  # Faire spawn aléatoirement
@@ -136,12 +140,10 @@ class Game:
             self.enemy.save_location()
             self.player.save_location()
             self.handle_input()
-
-
             self.group.center(self.player.rect)
-
             self.group.draw(self.screen)
             self.bullet_group.draw(self.screen)
+            self.UI.render(self.screen)
 
 
             # update the full display surface to the screen
