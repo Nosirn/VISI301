@@ -50,7 +50,6 @@ class Player(pygame.sprite.Sprite):
         posMouseX = pygame.mouse.get_pos()[0]
         posMouseY = pygame.mouse.get_pos()[1]
         angle = 45
-        #self.r_sprite_sheet = pygame.transform.rotate(self.sprite_sheet, angle)
 
         image.blit(self.sprite_sheet, (0, 0), (x, y, 55, 95))
 
@@ -68,7 +67,6 @@ class Player(pygame.sprite.Sprite):
         self.magazine -= 1
         print(self.magazine)
         return Bullet(self.position[0], self.position[1])
-
 
 
     def change_weapon(self, skin):
