@@ -40,8 +40,8 @@ class Game:
         self.UI = UserInterface()
 
         # generate enemy
-        enemy_position = tmx_data.get_object_by_name("spawn_zombie1")  # Faire spawn aléatoirement
-        self.enemy = Enemy(enemy_position.x, enemy_position.y)
+        #enemy_position = tmx_data.get_object_by_name("spawn_zombie1")  # Faire spawn aléatoirement
+        #self.enemy = Enemy(enemy_position.x, enemy_position.y)
 
         # generate bullet 
         #self.bullet = Bullet(self.player.get_position()[0], self.player.get_position()[1])
@@ -69,8 +69,8 @@ class Game:
         # calques
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=4)
         self.group.add(self.player)
-        #self.group.add(self.enemy)
         self.bullet_group = pygame.sprite.Group()
+        self.zombie_group = pygame.sprite.Group()
         
 
     def handle_input(self):
@@ -104,22 +104,6 @@ class Game:
 
 
 
-    def follow_player(self):
-
-        if self.enemy.get_position()[0] > self.player.get_position()[0]:
-            self.enemy.move_left()
-        elif self.enemy.get_position()[0] < self.player.get_position()[0]:
-            self.enemy.move_right()
-        if self.enemy.get_position()[1] > self.player.get_position()[1]:
-            self.enemy.move_up()
-        elif self.enemy.get_position()[1] < self.player.get_position()[1]:
-            self.enemy.move_down()
-
-        self.enemy.position[0] += self.enemy.change_position[0]
-        self.enemy.position[1] += self.enemy.change_position[1]
-        self.enemy.change_position = [0, 0]
-
-
     def update(self):
         self.group.update()
         self.bullet_group.update()
@@ -136,8 +120,7 @@ class Game:
         running = True
         while running:
             self.update()
-            self.follow_player()
-            self.enemy.save_location()
+            #self.enemy.save_location()
             self.player.save_location()
             self.handle_input()
             self.group.center(self.player.rect)

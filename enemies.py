@@ -43,6 +43,21 @@ class Enemy(pygame.sprite.Sprite):
         image.blit(self.sprite_sheet, (0, 0), (x, y, 64, 64))
         return image
 
+    def follow_player(self):
+
+        if self.get_position()[0] > self.player.get_position()[0]:
+            self.move_left()
+        elif self.get_position()[0] < self.player.get_position()[0]:
+            self.move_right()
+        if self.get_position()[1] > self.player.get_position()[1]:
+            self.move_up()
+        elif self.get_position()[1] < self.player.get_position()[1]:
+            self.move_down()
+
+        self.position[0] += self.enemy.change_position[0]
+        self.position[1] += self.enemy.change_position[1]
+        self.change_position = [0, 0]
+
 
 
 
