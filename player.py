@@ -15,10 +15,8 @@ class Player(pygame.sprite.Sprite):
         self.images = {'hand' : self.get_image(0,0),
                        'pistol' : self.get_image(56,0),
                        'smg' : self.get_image(112,0)}
+        self.weapon = self.pistol()
         self.munition = 50
-        self.capacity = 10
-        self.weapon = "pistol"
-        self.listweapon = ["hand", "pistol", "smg"]
 
 
     def get_position(self):
@@ -57,15 +55,46 @@ class Player(pygame.sprite.Sprite):
         image.blit(self.sprite_sheet, (0, 0), (x, y, 55, 95))
 
         return image
-    
+
+    def can_shoot(self):
+        if self.magazine > 0:
+            res = True
+        else:
+            res = False
+        return res
+
     def create_bullet(self):
         '''apelle une bullet'''
+        self.magazine -= 1
+        print(self.magazine)
         return Bullet(self.position[0], self.position[1])
-    
+
+
+
     def change_weapon(self, skin):
         '''change le skin selon l'arme'''
         self.image = self.images[skin]
         self.image.set_colorkey([0, 0, 0])
 
+    def pistol(self):
+        '''capacité du chargeur'''
+        self.capacity_max = 7
+        self.magazine = 0
 
-        
+
+    def smg(self):
+        '''capacité du chargeur'''
+        self.capacity_max = 20
+        self.magazine = 0
+
+    def hand(self):
+        '''capacité du chargeur'''
+        self.capacity_max = 0
+        self.magazine = 0
+
+    def reload(self):
+        while self.magazine < self.capacity_max and self.munition > 0:
+            self.magazine += 1
+            self.munition -= 1
+        print("chargeur", self.magazine)
+        print("mun restantes", self.munition)

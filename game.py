@@ -3,6 +3,7 @@ import pytmx
 import pyscroll
 import math
 
+
 from bullet import Bullet
 from player import Player
 from enemies import Enemy
@@ -64,7 +65,7 @@ class Game:
         # calques
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=4)
         self.group.add(self.player)
-        self.group.add(self.enemy)
+        #self.group.add(self.enemy)
         self.bullet_group = pygame.sprite.Group()
         
 
@@ -80,19 +81,22 @@ class Game:
         if pressed[pygame.K_d]:
             self.player.move_right()
         if pygame.mouse.get_pressed()[0]:
-           self.bullet_group.add(self.player.create_bullet())
+            print(self.player.can_shoot())
+            if self.player.can_shoot():
+                self.bullet_group.add(self.player.create_bullet())
+
         if pressed[pygame.K_c]:
             self.player.change_weapon('hand')
+            self.player.weapon = self.player.hand()
         if pressed[pygame.K_a]:
             self.player.change_weapon('pistol')
+            self.player.weapon = self.player.pistol()
         if pressed[pygame.K_f]:
             self.player.change_weapon('smg')
-           
-           
-           
-           # if self.bullet.bullet_state == "ready":
-            #    self.px, self.py = pygame.mouse.get_pos()
-             #   self.fire_bullet()
+            self.player.weapon = self.player.smg()
+        if pressed[pygame.K_r]:
+            self.player.reload()
+
 
 
     def follow_player(self):

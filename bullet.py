@@ -6,6 +6,7 @@ import math
 class Bullet(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
+        '''x et y la position de la balle '''
         super().__init__()
         self.pos = [x, y]
         self.sprite_sheet = pygame.image.load('images/round_bullet.png')
