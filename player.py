@@ -56,11 +56,7 @@ class Player(pygame.sprite.Sprite):
         return image
 
     def can_shoot(self):
-        if self.magazine > 0:
-            res = True
-        else:
-            res = False
-        return res
+        return self.magazine > 0
 
     def create_bullet(self):
         '''apelle une bullet'''
