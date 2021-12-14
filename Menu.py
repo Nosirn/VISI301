@@ -5,7 +5,7 @@ import pygame_menu
 
 pygame.init()
 
-screenDim = (640,360) # Taille de l'écran
+screenDim = (800,800) # Taille de l'écran
 screen = pygame.display.set_mode(screenDim)
 
 def Menu(choix, surface):
