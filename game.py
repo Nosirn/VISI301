@@ -101,11 +101,14 @@ class Game:
         for i in range(0, taille_vague):
             self.enemy_group.add(Enemy(random.randint(100, 700), random.randint(100, 700)))
 
+    def update_enemy(self):
+        self.enemy_group.update(self.player.position[0], self.player.position[1])
+
 
     def update(self):
         self.group.update()
         self.bullet_group.update()
-        self.enemy_group.update()
+        self.update_enemy()
 
         # Test collision
         for sprite in self.group.sprites():

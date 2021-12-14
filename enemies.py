@@ -13,7 +13,6 @@ class Enemy(pygame.sprite.Sprite):
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
         self.old_position = self.position.copy()
         self.speed = 1
-        self.player_position = self.get_player_position()
 
     def get_position(self):
         return [self.position[0], self.position[1]]
@@ -28,10 +27,10 @@ class Enemy(pygame.sprite.Sprite):
 
     def move_down(self): self.change_position[1] += self.speed
 
-    def update(self):
+    def update(self, player_x, player_y):
         self.rect.topleft = self.position
         self.feet.midbottom = self.rect.midbottom
-        self.follow_player(self.player_position[0],self.player_position()[1])
+        self.follow_player(player_x,player_y)
 
        # if self.rect.colliderect(self.bullet.rect) :
         #    self.kill()
