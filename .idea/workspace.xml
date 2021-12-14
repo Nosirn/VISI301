@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="228f2df8-909d-45ad-ae9c-d980d905fe9d" name="Changes" comment="ajout chargeur armes">
-      <change afterPath="$PROJECT_DIR$/images/munition.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_12_2021_18_49__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_12_2021_18_49__Changes_.xml" afterDir="false" />
+    <list default="true" id="228f2df8-909d-45ad-ae9c-d980d905fe9d" name="Changes" comment="rotation du joueur">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Inventory.py" beforeDir="false" afterPath="$PROJECT_DIR$/Inventory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/InventorySlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/InventorySlot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bullet.py" beforeDir="false" afterPath="$PROJECT_DIR$/bullet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/enemies.py" beforeDir="false" afterPath="$PROJECT_DIR$/enemies.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/game.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userinterface.py" beforeDir="false" afterPath="$PROJECT_DIR$/userinterface.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,7 +188,14 @@
       <option name="project" value="LOCAL" />
       <updated>1639351711993</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="rotation du joueur">
+      <created>1639477250989</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1639477250989</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -219,6 +223,7 @@
     <MESSAGE value="gestion de la balle dans sa class" />
     <MESSAGE value="ajout skin/armes" />
     <MESSAGE value="ajout commentaire player" />
-    <option name="LAST_COMMIT_MESSAGE" value="ajout commentaire player" />
+    <MESSAGE value="rotation du joueur" />
+    <option name="LAST_COMMIT_MESSAGE" value="rotation du joueur" />
   </component>
 </project>

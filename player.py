@@ -43,8 +43,7 @@ class Player(pygame.sprite.Sprite):
         deltaY = posMouseY - self.position[1]
         deltaX = posMouseX - self.position[0]
         angleInDegrees = math.atan2(deltaY , deltaX) * 180 / math.pi
-        angleInDegrees = angleInDegrees +90
-        print(angleInDegrees)
+        angleInDegrees = angleInDegrees + 90
 
         self.rect.topleft = self.position
         self.image = pygame.transform.rotozoom(self.image_rotated, -angleInDegrees, 1)
