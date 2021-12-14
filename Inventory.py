@@ -8,8 +8,10 @@ class Inventory:
         self.rect = self.image.get_rect()
         self.rect.topleft= (570, 710)
 
-        self.slots.append(InventorySlot("images/coin.png",(580, 723)))
-
+        self.slots.append(InventorySlot("images/coin.png",(580, 723), 2))
+        self.slots.append(InventorySlot("images/coin.png",(620, 723), 1))
+        self.slots.append(InventorySlot("images/coin.png", (660, 723), 1))
+        self.slots.append(InventorySlot("images/munition.png",(700, 723), 0))
 
 
     def render(self, screen):

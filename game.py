@@ -40,8 +40,8 @@ class Game:
         self.UI = UserInterface()
 
         # generate enemy
-        #enemy_position = tmx_data.get_object_by_name("spawn_zombie1")  # Faire spawn aléatoirement
-        self.enemy = Enemy(45,45)
+        enemy_position = tmx_data.get_object_by_name("spawn_zombie1")  # Faire spawn aléatoirement
+        self.enemy = Enemy(enemy_position.x, enemy_position.y)
 
         # generate bullet 
         #self.bullet = Bullet(self.player.get_position()[0], self.player.get_position()[1])
@@ -69,12 +69,8 @@ class Game:
         # calques
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=4)
         self.group.add(self.player)
+        #self.group.add(self.enemy)
         self.bullet_group = pygame.sprite.Group()
-
-
-        self.zombie_group = pygame.sprite.Group()
-
-        self.zombie_group.add(self.enemy)
         
 
     def handle_input(self):
@@ -90,7 +86,6 @@ class Game:
             self.player.move_right()
 
         if pygame.mouse.get_pressed()[0]:
-            print(self.player.can_shoot())
             if self.player.can_shoot():
                 self.bullet_group.add(self.player.create_bullet())
 
@@ -105,17 +100,34 @@ class Game:
             self.player.weapon = self.player.smg()
         if pressed[pygame.K_r]:
             self.player.reload()
+        #if pressed[pygame.K_x]:
+        #   self.UI.toggleInventory()
 
+
+
+    def follow_player(self):
+
+        if self.enemy.get_position()[0] > self.player.get_position()[0]:
+            self.enemy.move_left()
+        elif self.enemy.get_position()[0] < self.player.get_position()[0]:
+            self.enemy.move_right()
+        if self.enemy.get_position()[1] > self.player.get_position()[1]:
+            self.enemy.move_up()
+        elif self.enemy.get_position()[1] < self.player.get_position()[1]:
+            self.enemy.move_down()
+
+        self.enemy.position[0] += self.enemy.change_position[0]
+        self.enemy.position[1] += self.enemy.change_position[1]
+        self.enemy.change_position = [0, 0]
 
 
     def update(self):
         self.group.update()
         self.bullet_group.update()
-        self.zombie_group.update()
 
         # Test collision
         for sprite in self.group.sprites():
-            if sprite.feet.collidelist(self.walls) > -1:
+            if sprite.rect.collidelist(self.walls) > -1:
                 sprite.move_back()
 
     def run(self):
@@ -125,13 +137,13 @@ class Game:
         running = True
         while running:
             self.update()
-            #self.enemy.save_location()
+            self.follow_player()
+            self.enemy.save_location()
             self.player.save_location()
             self.handle_input()
             self.group.center(self.player.rect)
             self.group.draw(self.screen)
             self.bullet_group.draw(self.screen)
-            self.zombie_group.draw(self.screen)
             self.UI.render(self.screen)
 
 
