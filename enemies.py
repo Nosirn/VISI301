@@ -32,9 +32,10 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.topleft = self.position
         self.feet.midbottom = self.rect.midbottom
 
-       # if self.rect.colliderect(self.bullet.rect) :
-        #    self.kill()
-         #   self.bullet.kill()
+        #for bullet in self.bullet_group:
+            #if self.rect.colliderect(bullet.rect) :
+                #self.kill()
+                #bullet.kill()
 
     # Replace le sprite à son ancienne position si il atteind une zone de collision
     def move_back(self):
