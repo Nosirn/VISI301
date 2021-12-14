@@ -20,6 +20,8 @@ class Player(pygame.sprite.Sprite):
         self.weapon = self.pistol()
         self.munition = 50
         self.cool_down_count = 0
+        self.player_kill = False
+        self.coin = 0
 
 
     def get_position(self):
@@ -107,3 +109,7 @@ class Player(pygame.sprite.Sprite):
             self.munition -= 1
         print("chargeur", self.magazine)
         print("mun restantes", self.munition)
+
+    def get_coin(self):
+        self.coin += 1
+        print("coin : ", self.coin)

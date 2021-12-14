@@ -41,12 +41,12 @@ class Bullet(pygame.sprite.Sprite):
         #Condition de la disparition de la balle
         if self.rect.topleft[0] > 800 or self.rect.topleft[0] < 0 or self.rect.topleft[1] > 800 or self.rect.topleft[1] < 0:
             self.kill()
+        #elif pygame.sprite.collide_rect(self.image, self.enemy)
 
 
     def rotate(self, img, rect, angle):
         self.rot_image = pygame.transform.rotate(img, angle)
         return self.rot_image
-
 
     def parametre_tir(self):
         self.vector = self.vector_bullet()  # on recupère le vecteur de direction du tir
@@ -75,3 +75,6 @@ class Bullet(pygame.sprite.Sprite):
         vect = [posMouseX - posBulletX, posMouseY - posBulletY]
         #print(vect)
         return vect
+
+    def touche(self):
+        self.kill()

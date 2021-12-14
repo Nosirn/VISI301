@@ -27,14 +27,11 @@ class Enemy(pygame.sprite.Sprite):
 
     def move_down(self): self.change_position[1] += self.speed
 
-    def update(self, player_x, player_y):
+    def update(self, player_x, player_y, liste_rect):
         self.rect.topleft = self.position
         self.feet.midbottom = self.rect.midbottom
         self.follow_player(player_x,player_y)
 
-       # if self.rect.colliderect(self.bullet.rect) :
-        #    self.kill()
-         #   self.bullet.kill()
 
     # Replace le sprite à son ancienne position si il atteind une zone de collision
     def move_back(self):
@@ -48,6 +45,7 @@ class Enemy(pygame.sprite.Sprite):
         return image
 
     def follow_player(self, player_x, player_y):
+        self.player_kill = False
         if self.get_position()[0] > player_x:
             self.move_left()
         elif self.get_position()[0] < player_x:
@@ -60,8 +58,9 @@ class Enemy(pygame.sprite.Sprite):
         self.position[0] += self.change_position[0]
         self.position[1] += self.change_position[1]
         self.change_position = [0, 0]
+        
+        if self.get_position()[0] == player_x or self.get_position()[1]:
+            self.player_kill = True
 
-
-    def get_player_position(self):
-        return [700, 600]
-
+    def touche(self):
+        self.kill()

@@ -40,21 +40,10 @@ class Game:
 
         self.UI = UserInterface()
 
-        # generate enemy
-        enemy_position = tmx_data.get_object_by_name("spawn_zombie1")  # Faire spawn aléatoirement
-        self.enemy = Enemy(enemy_position.x, enemy_position.y)
-
-        # generate bullet 
-        #self.bullet = Bullet(self.player.get_position()[0], self.player.get_position()[1])
-        
-
-        #generate Piece
-        self.piece = Piece(0, 0)
-
         # Collision
-
+        self.zombies = []
         self.walls = []
-
+        self.test = []
         for obj in tmx_data.objects:
             if obj.type == "collision":
                 self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
@@ -100,17 +89,32 @@ class Game:
     def vagues(self, taille_vague):
         for i in range(0, taille_vague):
             self.enemy_group.add(Enemy(random.randint(100, 700), random.randint(100, 700)))
-
-    def update_enemy(self):
-        self.enemy_group.update(self.player.position[0], self.player.position[1])
+            self.zombies.append(pygame.Rect(0, 0, 64, 64))
 
 
     def update(self):
         self.group.update()
         self.bullet_group.update()
-        self.update_enemy()
+        self.enemy_group.update(self.player.position[0], self.player.position[1], self.zombies)
 
         # Test collision
+        i = 0
+        for sprite in self.enemy_group:
+            self.zombies[i] = sprite.rect
+            i += 1
+
+        j = 0
+        for sprite in self.bullet_group.sprites():
+            if sprite.rect.collidelist(self.zombies) > -1:
+                self.enemy_group.sprites()[j].touche()
+                sprite.touche()
+                self.player.get_coin()
+                rect_remove = self.zombies[j]
+                self.zombies.remove(rect_remove)
+            j += 1
+
+        print(self.zombies)
+
         for sprite in self.group.sprites():
             if sprite.rect.collidelist(self.walls) > -1:
                 sprite.move_back()
@@ -122,7 +126,6 @@ class Game:
         running = True
         while running:
             self.update()
-            self.enemy.save_location()
             self.player.save_location()
             self.handle_input()
             self.group.center(self.player.rect)
