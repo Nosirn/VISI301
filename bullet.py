@@ -9,9 +9,7 @@ class Bullet(pygame.sprite.Sprite):
         '''x et y la position de la balle '''
         super().__init__()
         self.pos = [x, y]
-        self.sprite_sheet = pygame.image.load('images/round_bullet.png')
-        self.image = self.get_image(0, 0)
-        #self.image = pygame.transform.scale(self.image, (20,20))
+        self.image = pygame.image.load('images/round_bullet.png')
         self.image.set_colorkey([255, 255, 255])
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]
@@ -35,8 +33,8 @@ class Bullet(pygame.sprite.Sprite):
         py = self.pos[1]
         # print(self.bullet.position[1])
 
-        px += 3 * self.vector[0]
-        py += 3 * self.vector[1]
+        px += 6 * self.vector[0]
+        py += 6 * self.vector[1]
         self.pos = [px, py]
         self.rect.topleft = self.pos
 
@@ -44,11 +42,6 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.topleft[0] > 800 or self.rect.topleft[0] < 0 or self.rect.topleft[1] > 800 or self.rect.topleft[1] < 0:
             self.kill()
 
-
-    def get_image(self, x, y):
-        image = pygame.Surface([16, 16])
-        image.blit(self.sprite_sheet, (700, 700), (x, y, 16, 16))
-        return image
 
     def rotate(self, img, rect, angle):
         self.rot_image = pygame.transform.rotate(img, angle)

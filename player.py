@@ -1,4 +1,5 @@
 import pygame
+import math
 from bullet import Bullet
 
 class Player(pygame.sprite.Sprite):
@@ -7,16 +8,18 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.sprite_sheet = pygame.image.load('images/spritejoueur.png')
         self.image = self.get_image(56, 0)
+        self.image_rotated = self.image
         self.image.set_colorkey([0, 0, 0])
         self.rect = self.image.get_rect()
         self.position = [x, y]
-        self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
+        #self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
         self.old_position = self.position.copy()
         self.images = {'hand' : self.get_image(0,0),
                        'pistol' : self.get_image(56,0),
                        'smg' : self.get_image(112,0)}
         self.weapon = self.pistol()
         self.munition = 50
+        self.cool_down_count = 0
 
 
     def get_position(self):
@@ -35,39 +38,53 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         '''met à jour le sprite'''
+        posMouseX = pygame.mouse.get_pos()[0]
+        posMouseY = pygame.mouse.get_pos()[1]
+        deltaY = posMouseY - self.position[1]
+        deltaX = posMouseX - self.position[0]
+        angleInDegrees = math.atan2(deltaY , deltaX) * 180 / math.pi
+        angleInDegrees = angleInDegrees + 90
+
         self.rect.topleft = self.position
-        self.feet.midbottom = self.rect.midbottom
+        self.image = pygame.transform.rotozoom(self.image_rotated, -angleInDegrees, 1)
+        self.rect = self.image.get_rect(center = (self.position[0],self.position[1]))
+        self.image.set_colorkey([0, 0, 0])
 
     def move_back(self):
         '''Replace le joueur à son ancienne position si il atteint une zone de collision'''
         self.position = self.old_position
-        self.rect.topleft = self.position
-        self.feet.midbottom = self.rect.midbottom
+        self.rect.center = self.position
+        #self.feet.midbottom = self.rect.midbottom
 
     def get_image(self, x, y):
         '''dessine le srite'''
         image = pygame.Surface([55, 95])
-        posMouseX = pygame.mouse.get_pos()[0]
-        posMouseY = pygame.mouse.get_pos()[1]
-        angle = 45
-
         image.blit(self.sprite_sheet, (0, 0), (x, y, 55, 95))
 
         return image
 
+    def cooldown(self):
+        if self.cool_down_count >= 10:
+            self.cool_down_count = 0
+        elif self.cool_down_count > 0:
+            self.cool_down_count += 1
+
     def can_shoot(self):
-        return self.magazine > 0
+        self.cooldown()
+        return self.magazine > 0 and self.cool_down_count == 0
 
     def create_bullet(self):
         '''apelle une bullet'''
         self.magazine -= 1
         print(self.magazine)
+        self.cool_down_count = 1
         return Bullet(self.position[0], self.position[1])
 
     def change_weapon(self, skin):
         '''change le skin selon l'arme'''
         self.image = self.images[skin]
         self.image.set_colorkey([0, 0, 0])
+        self.image_rotated = self.image
 
     def pistol(self):
         '''capacité du chargeur'''

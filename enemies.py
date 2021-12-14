@@ -1,6 +1,5 @@
 import pygame
 
-
 class Enemy(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
@@ -14,6 +13,7 @@ class Enemy(pygame.sprite.Sprite):
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
         self.old_position = self.position.copy()
         self.speed = 1
+        self.player_position = self.get_player_position()
 
     def get_position(self):
         return [self.position[0], self.position[1]]
@@ -31,6 +31,7 @@ class Enemy(pygame.sprite.Sprite):
     def update(self):
         self.rect.topleft = self.position
         self.feet.midbottom = self.rect.midbottom
+        self.follow_player(self.player_position[0],self.player_position()[1])
 
         #for bullet in self.bullet_group:
             #if self.rect.colliderect(bullet.rect) :
@@ -48,21 +49,21 @@ class Enemy(pygame.sprite.Sprite):
         image.blit(self.sprite_sheet, (0, 0), (x, y, 64, 64))
         return image
 
-    def follow_player(self):
-
-        if self.get_position()[0] > self.player.get_position()[0]:
+    def follow_player(self, player_x, player_y):
+        if self.get_position()[0] > player_x:
             self.move_left()
-        elif self.get_position()[0] < self.player.get_position()[0]:
+        elif self.get_position()[0] < player_x:
             self.move_right()
-        if self.get_position()[1] > self.player.get_position()[1]:
+        if self.get_position()[1] > player_y:
             self.move_up()
-        elif self.get_position()[1] < self.player.get_position()[1]:
+        elif self.get_position()[1] < player_y:
             self.move_down()
 
-        self.position[0] += self.enemy.change_position[0]
-        self.position[1] += self.enemy.change_position[1]
+        self.position[0] += self.change_position[0]
+        self.position[1] += self.change_position[1]
         self.change_position = [0, 0]
 
 
-
+    def get_player_position(self):
+        return [700, 600]
 

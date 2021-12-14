@@ -2,6 +2,7 @@ import pygame
 import pytmx
 import pyscroll
 import math
+import random
 
 from bullet import Bullet
 from player import Player
@@ -29,7 +30,7 @@ class Game:
         tmx_data = pytmx.util_pygame.load_pygame('map.tmx')
         map_data = pyscroll.data.TiledMapData(tmx_data)
         map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
-        #map_layer.zoom = 2
+        #zzmap_layer.zoom = 2
 
         # generate player
         player_position = tmx_data.get_object_by_name("player")
@@ -40,8 +41,8 @@ class Game:
         self.UI = UserInterface()
 
         # generate enemy
-        #enemy_position = tmx_data.get_object_by_name("spawn_zombie1")  # Faire spawn aléatoirement
-        self.enemy = Enemy(45,45)
+        enemy_position = tmx_data.get_object_by_name("spawn_zombie1")  # Faire spawn aléatoirement
+        self.enemy = Enemy(enemy_position.x, enemy_position.y)
 
         # generate bullet 
         #self.bullet = Bullet(self.player.get_position()[0], self.player.get_position()[1])
@@ -49,14 +50,6 @@ class Game:
 
         #generate Piece
         self.piece = Piece(0, 0)
-
-        # var for bullet movement
-
-        # self.px = 0
-        # self.py = 0
-        # self.radians = 0
-        # self.dx = 0
-        # self.dy = 0
 
         # Collision
 
@@ -70,12 +63,9 @@ class Game:
         self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=4)
         self.group.add(self.player)
         self.bullet_group = pygame.sprite.Group()
+        self.enemy_group = pygame.sprite.Group()
 
-
-        self.zombie_group = pygame.sprite.Group()
-
-        self.zombie_group.add(self.enemy)
-        
+        self.new_vague = True
 
     def handle_input(self):
         pressed = pygame.key.get_pressed()
@@ -90,7 +80,6 @@ class Game:
             self.player.move_right()
 
         if pygame.mouse.get_pressed()[0]:
-            print(self.player.can_shoot())
             if self.player.can_shoot():
                 self.bullet_group.add(self.player.create_bullet())
 
@@ -105,17 +94,22 @@ class Game:
             self.player.weapon = self.player.smg()
         if pressed[pygame.K_r]:
             self.player.reload()
+        #if pressed[pygame.K_x]:
+        #   self.UI.toggleInventory()
 
+    def vagues(self, taille_vague):
+        for i in range(0, taille_vague):
+            self.enemy_group.add(Enemy(random.randint(100, 700), random.randint(100, 700)))
 
 
     def update(self):
         self.group.update()
         self.bullet_group.update()
-        self.zombie_group.update()
+        self.enemy_group.update()
 
         # Test collision
         for sprite in self.group.sprites():
-            if sprite.feet.collidelist(self.walls) > -1:
+            if sprite.rect.collidelist(self.walls) > -1:
                 sprite.move_back()
 
     def run(self):
@@ -125,15 +119,17 @@ class Game:
         running = True
         while running:
             self.update()
-            #self.enemy.save_location()
+            self.enemy.save_location()
             self.player.save_location()
             self.handle_input()
             self.group.center(self.player.rect)
             self.group.draw(self.screen)
             self.bullet_group.draw(self.screen)
-            self.zombie_group.draw(self.screen)
+            self.enemy_group.draw(self.screen)
             self.UI.render(self.screen)
-
+            if self.new_vague == True:
+                self.vagues(2)
+                self.new_vague = False
 
             # update the full display surface to the screen
             pygame.display.flip()

@@ -15,23 +15,19 @@ class UserInterface:
         self.largefont = pygame.font.SysFont("Verdana", 40)
 
         self.inventory = Inventory()
-        self.inventoryRender = True
+        #self.inventoryRender = True
 
         self.text = self.regularfont.render("0", True, self.color_black)
 
-    def update(self, fps):
-        self.text = self.regularfont.render("0", True, self.color_black)
 
     def render(self, screen):
-        screen.blit(self.text, (700, 20))
+        #if self.inventoryRender == True:
+        self.inventory.render(screen)
 
-        if self.inventoryRender == True:
-            self.inventory.render(screen)
-
-    def toggleInventory(self):
-        if self.inventoryRender == True:
-            self.inventoryRender = False
-        elif self.inventoryRender == False:
-            self.inventoryRender = True
+    # def toggleInventory(self):
+    #     if self.inventoryRender == True:
+    #         self.inventoryRender = False
+    #     elif self.inventoryRender == False:
+    #         self.inventoryRender = True
 
 
