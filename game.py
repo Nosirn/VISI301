@@ -171,6 +171,18 @@ class Game:
         else:
             print("Le choix désiré n'existe pas.")
 
+    def dammages(self):
+        for zombie in self.enemy_group():
+            if pygame.sprite.collide_rect(zombie,self.player):
+                self.player.health = self.player.health -1
+
+    def dead(self):
+        if self.player.health <= 0:
+            living = False
+        else :
+            living = True
+        return living
+
     def start(self):
         print("lancement de la partie")
         clock = pygame.time.Clock()
@@ -195,6 +207,7 @@ class Game:
                 if event.type == pygame.QUIT:
                     alive = False
 
+            alive = self.dead()
             # nombre de FPS
             clock.tick(60)
 

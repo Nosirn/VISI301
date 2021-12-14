@@ -114,5 +114,4 @@ class Player(pygame.sprite.Sprite):
         self.coin += 1
         print("coin : ", self.coin)
 
-    def degat(self):
-        pass
+    #def degat(self):
