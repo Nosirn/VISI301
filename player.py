@@ -22,6 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.cool_down_count = 0
         self.player_kill = False
         self.coin = 0
+        #self.life = 200
 
 
     def get_position(self):
@@ -113,3 +114,6 @@ class Player(pygame.sprite.Sprite):
     def get_coin(self):
         self.coin += 1
         print("coin : ", self.coin)
+
+    #def dead(self):
+        #if self.life <= 0 :
