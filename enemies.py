@@ -62,5 +62,9 @@ class Enemy(pygame.sprite.Sprite):
         if self.get_position()[0] == player_x or self.get_position()[1]:
             self.player_kill = True
 
+
+    def update_health_bar(self, surface):
+        pygame.draw.rect(surface, (111, 210, 46), self.rect)
+
     def touche(self):
         self.kill()

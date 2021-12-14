@@ -3,12 +3,13 @@ import pytmx
 import pyscroll
 import math
 import random
+import pygame_menu
 
 from bullet import Bullet
 from player import Player
 from enemies import Enemy
-from pieces import Piece
 from userinterface import UserInterface
+
 
 
 class Game:
@@ -19,7 +20,8 @@ class Game:
         pygame.init()
 
         # create the screen
-        self.screen = pygame.display.set_mode((800, 800))
+        self.screenDim = (800,800)
+        self.screen = pygame.display.set_mode(self.screenDim)
 
         # Title and icon
         pygame.display.set_caption("CMI-zombie")
@@ -41,6 +43,7 @@ class Game:
         self.UI = UserInterface()
 
         # Collision
+        self.bullets = []
         self.zombies = []
         self.walls = []
         self.test = []
@@ -54,7 +57,39 @@ class Game:
         self.bullet_group = pygame.sprite.Group()
         self.enemy_group = pygame.sprite.Group()
 
-        self.new_vague = True
+        self.numero_vague = 1
+        self.vague_fini = True
+
+        #######################initialisation Menu################################
+
+        ## Promo autres groupes
+        self.secret = pygame_menu.Menu("Les jeux des CMI", self.screenDim[0], self.screenDim[1],
+                                  theme=pygame_menu.themes.THEME_GREEN)
+        path_groupe1 = "groupe1.png"
+        path_groupe2 = "groupe2.png"
+        self.secret.add.image(path_groupe1, scale=(self.screenDim[0] / 1280 * 0.5, self.screenDim[1] / 720 * 0.5))
+        self.secret.add.image(path_groupe2, scale=(self.screenDim[0] / 1280 * 0.5, self.screenDim[1] / 720 * 0.5))
+        ## manque un moyen de quitter (W.I.P.)
+
+        ## Menu des options
+        self.options = pygame_menu.Menu("Options", self.screenDim[0], self.screenDim[1], theme=pygame_menu.themes.THEME_GREEN)
+        self.options.add.range_slider('Musique', 50, (0, 100), 1, rangeslider_id="music", value_format=lambda x: str(int(x)))
+        self.options.add.range_slider('Effets sonore', 50, (0, 100), 1, rangeslider_id="sfx",
+                                 value_format=lambda x: str(int(x)))
+        self.options.add.button('retour au jeu', self.start)
+        ## manque un moyen de quitter (W.I.P.)
+
+        ## Menu principal
+        self.principal = pygame_menu.Menu("Bienvenue !", self.screenDim[0], self.screenDim[1],
+                                     theme=pygame_menu.themes.THEME_BLUE)
+        self.principal.add.text_input('Nom du Perso : ', default='Billy')
+        self.principal.add.button('Lancer la partie', self.start)
+        self.principal.add.button('Quitter le jeu', pygame_menu.events.EXIT)  # Quitter
+
+        self.mort = pygame_menu.Menu("Vous êtes mort D:", self.screenDim[0], self.screenDim[1],
+                                theme=pygame_menu.themes.THEME_DARK)
+        self.mort.add.button('Relancer une partie')  # Ajouter l'option pour relancer une partie ? ('...', Fonction)
+        self.mort.add.button('Quitter le jeu', pygame_menu.events.EXIT)
 
     def handle_input(self):
         pressed = pygame.key.get_pressed()
@@ -83,6 +118,8 @@ class Game:
             self.player.weapon = self.player.smg()
         if pressed[pygame.K_r]:
             self.player.reload()
+        if pressed[pygame.K_ESCAPE]:
+            self.Menu("options", self.screen)
         #if pressed[pygame.K_x]:
         #   self.UI.toggleInventory()
 
@@ -91,40 +128,56 @@ class Game:
             self.enemy_group.add(Enemy(random.randint(100, 700), random.randint(100, 700)))
             self.zombies.append(pygame.Rect(0, 0, 64, 64))
 
+    def new_vague(self):
+        if len(self.enemy_group) == 0:
+            self.vagues(self.numero_vague)
+            self.numero_vague += 1
+
 
     def update(self):
         self.group.update()
         self.bullet_group.update()
         self.enemy_group.update(self.player.position[0], self.player.position[1], self.zombies)
 
-        # Test collision
+        # Gestion collision
         i = 0
         for sprite in self.enemy_group:
+            sprite.update_health_bar(self.screen)
             self.zombies[i] = sprite.rect
             i += 1
 
-        j = 0
         for sprite in self.bullet_group.sprites():
             if sprite.rect.collidelist(self.zombies) > -1:
-                self.enemy_group.sprites()[j].touche()
+                for zombie in self.enemy_group.sprites():
+                    if pygame.sprite.collide_rect(zombie, sprite):
+                        zombie.touche()
+                        self.zombies.remove(zombie)
                 sprite.touche()
                 self.player.get_coin()
-                rect_remove = self.zombies[j]
-                self.zombies.remove(rect_remove)
-            j += 1
-
-        print(self.zombies)
 
         for sprite in self.group.sprites():
             if sprite.rect.collidelist(self.walls) > -1:
                 sprite.move_back()
 
-    def run(self):
-        clock = pygame.time.Clock()
+    def Menu(self, choix, surface):
+        if choix == "principal":
+            self.principal.mainloop(surface)
+        elif choix == "mort":
+            self.mort.mainloop(surface)
+        elif choix == "options":
+            self.options.mainloop(surface)
+        elif choix == "secret":
+            self.secret.mainloop(surface)
+        else:
+            print("Le choix désiré n'existe pas.")
 
+    def start(self):
+        print("lancement de la partie")
+        clock = pygame.time.Clock()
         # Game loop
-        running = True
-        while running:
+        alive = True
+        while alive:
+
             self.update()
             self.player.save_location()
             self.handle_input()
@@ -133,18 +186,23 @@ class Game:
             self.bullet_group.draw(self.screen)
             self.enemy_group.draw(self.screen)
             self.UI.render(self.screen)
-            if self.new_vague == True:
-                self.vagues(2)
-                self.new_vague = False
+            self.new_vague()
 
             # update the full display surface to the screen
             pygame.display.flip()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    alive = False
 
             # nombre de FPS
             clock.tick(60)
 
+        self.Menu("mort", self.screen)
+
+
+
+    def run(self):
+
+        self.Menu('principal', self.screen)
         pygame.quit()
