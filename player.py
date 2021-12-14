@@ -19,6 +19,8 @@ class Player(pygame.sprite.Sprite):
                        'smg' : self.get_image(112,0)}
         self.weapon = self.pistol()
         self.munition = 50
+        self.pistol_magazine = 0
+        self.smg_magazine = 0
         self.cool_down_count = 0
         self.player_kill = False
         self.coin = 0
@@ -96,7 +98,7 @@ class Player(pygame.sprite.Sprite):
     def smg(self):
         '''capacité du chargeur'''
         self.capacity_max = 20
-        self.magazine = 0
+        self.magazine = self.smg_magazine
 
     def hand(self):
         '''capacité du chargeur'''

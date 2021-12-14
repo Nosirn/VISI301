@@ -40,7 +40,7 @@ class Game:
 
         # user interface
 
-        self.UI = UserInterface()
+        self.UI = UserInterface(self.player.munition, self.player.coin)
 
         # Collision
         self.bullets = []
@@ -77,6 +77,7 @@ class Game:
         self.options.add.range_slider('Effets sonore', 50, (0, 100), 1, rangeslider_id="sfx",
                                  value_format=lambda x: str(int(x)))
         self.options.add.button('retour au jeu', self.start)
+        self.options.add.button('Quitter le jeu', pygame_menu.events.EXIT)
         ## manque un moyen de quitter (W.I.P.)
 
         ## Menu principal
@@ -107,13 +108,13 @@ class Game:
             if self.player.can_shoot():
                 self.bullet_group.add(self.player.create_bullet())
 
-        if pressed[pygame.K_c]:
+        if pressed[pygame.K_1]:
             self.player.change_weapon('hand')
             self.player.weapon = self.player.hand()
-        if pressed[pygame.K_a]:
+        if pressed[pygame.K_2]:
             self.player.change_weapon('pistol')
             self.player.weapon = self.player.pistol()
-        if pressed[pygame.K_f]:
+        if pressed[pygame.K_3]:
             self.player.change_weapon('smg')
             self.player.weapon = self.player.smg()
         if pressed[pygame.K_r]:
@@ -138,6 +139,7 @@ class Game:
         self.group.update()
         self.bullet_group.update()
         self.enemy_group.update(self.player.position[0], self.player.position[1], self.zombies)
+        self.UI.update(self.player.munition, self.player.coin)
 
         # Gestion collision
         i = 0
