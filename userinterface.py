@@ -1,5 +1,6 @@
 import pygame
 from Inventory import Inventory
+from Score import Score
 
 
 class UserInterface:
@@ -17,16 +18,21 @@ class UserInterface:
         self.inventory = Inventory(mun, coin)
         #self.inventoryRender = True
 
-        self.text = self.regularfont.render("0", True, self.color_black)
+        self.text = self.regularfont.render("point : ", True, self.color_black)
+        self.score = self.regularfont.render("0", True, self.color_black)
 
 
     def render(self, screen):
         #if self.inventoryRender == True:
         self.inventory.render(screen)
+        screen.blit(self.text, (660, 15))
+        screen.blit(self.score, (740, 15))
 
-    def update(self, mun, coin):
+    def update(self, mun, coin, point):
         self.inventory = Inventory(mun, coin)
-
+        new_point = point
+        self.text = self.regularfont.render(str("point :"), True, self.color_black)
+        self.score = self.regularfont.render(str(point), True, self.color_black)
     # def toggleInventory(self):
     #     if self.inventoryRender == True:
     #         self.inventoryRender = False

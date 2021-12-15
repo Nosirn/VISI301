@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="228f2df8-909d-45ad-ae9c-d980d905fe9d" name="Changes" comment="cooldown zombi" />
+    <list default="true" id="228f2df8-909d-45ad-ae9c-d980d905fe9d" name="Changes" comment="slot bar update">
+      <change afterPath="$PROJECT_DIR$/son/click.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/son/tir.wav" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Score.py" beforeDir="false" afterPath="$PROJECT_DIR$/Score.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userinterface.py" beforeDir="false" afterPath="$PROJECT_DIR$/userinterface.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -234,21 +242,14 @@
       <option name="project" value="LOCAL" />
       <updated>1639495005856</updated>
     </task>
-    <task id="LOCAL-00018" summary="rota zombie, change sprite">
-      <created>1639594738187</created>
+    <task id="LOCAL-00018" summary="slot bar update">
+      <created>1639523080837</created>
       <option name="number" value="00018" />
       <option name="presentableId" value="LOCAL-00018" />
       <option name="project" value="LOCAL" />
-      <updated>1639594738187</updated>
+      <updated>1639523080837</updated>
     </task>
-    <task id="LOCAL-00019" summary="cooldown zombi">
-      <created>1639595544078</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1639595544078</updated>
-    </task>
-    <option name="localTasksCounter" value="20" />
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -280,8 +281,7 @@
     <MESSAGE value="vague" />
     <MESSAGE value="follow player" />
     <MESSAGE value="collision balle/zombie" />
-    <MESSAGE value="rota zombie, change sprite" />
-    <MESSAGE value="cooldown zombi" />
-    <option name="LAST_COMMIT_MESSAGE" value="cooldown zombi" />
+    <MESSAGE value="slot bar update" />
+    <option name="LAST_COMMIT_MESSAGE" value="slot bar update" />
   </component>
 </project>

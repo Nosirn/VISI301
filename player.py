@@ -1,4 +1,5 @@
 import pygame
+from pygame import mixer
 import math
 from bullet import Bullet
 
@@ -17,14 +18,16 @@ class Player(pygame.sprite.Sprite):
         self.images = {'hand' : self.get_image(0,0),
                        'pistol' : self.get_image(56,0),
                        'smg' : self.get_image(112,0)}
-        self.weapon = self.pistol()
         self.munition = 50
         self.pistol_magazine = 0
         self.smg_magazine = 0
+        self.magazine = 0
         self.cool_down_count = 0
         self.player_kill = False
         self.coin = 0
         self.health = 5
+        self.score = 0
+        self.weapon = self.pistol()
 
     def get_position(self):
         '''récupère la position du joueur'''
@@ -67,21 +70,22 @@ class Player(pygame.sprite.Sprite):
 
         return image
 
-    def cooldown(self):
-        if self.cool_down_count >= 10:
+    def cooldown(self, delai):
+        if self.cool_down_count >= delai:
             self.cool_down_count = 0
         elif self.cool_down_count > 0:
             self.cool_down_count += 1
 
     def can_shoot(self):
-        self.cooldown()
+        self.cooldown(10)
         return self.magazine > 0 and self.cool_down_count == 0
 
     def create_bullet(self):
         '''apelle une bullet'''
         self.magazine -= 1
-        print(self.magazine)
         self.cool_down_count = 1
+        bullet_sound = mixer.Sound('son/tir.wav')
+        bullet_sound.play()
         return Bullet(self.position[0], self.position[1])
 
     def change_weapon(self, skin):
@@ -95,10 +99,11 @@ class Player(pygame.sprite.Sprite):
         self.capacity_max = 7
         self.magazine = 0
 
+
     def smg(self):
         '''capacité du chargeur'''
         self.capacity_max = 20
-        self.magazine = self.smg_magazine
+        self.magazine = 0
 
     def hand(self):
         '''capacité du chargeur'''
@@ -116,4 +121,12 @@ class Player(pygame.sprite.Sprite):
         self.coin += 1
         print("coin : ", self.coin)
 
-    #def degat(self):
+    def get_point(self):
+        self.score += 1
+        print("coin : ", self.score)
+
+    def buy_munition(self):
+        if self.coin >= 5:
+            self.munition += 10
+            self.coin -= 5
+

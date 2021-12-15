@@ -4,12 +4,14 @@ import pyscroll
 import math
 import random
 import pygame_menu
+from pygame import mixer
 
 
 from bullet import Bullet
 from player import Player
 from enemies import Enemy
 from userinterface import UserInterface
+from Score import Score
 
 
 
@@ -21,7 +23,7 @@ class Game:
         pygame.init()
 
         # create the screen
-        self.screenDim = (800,800)
+        self.screenDim = (800, 800)
         self.screen = pygame.display.set_mode(self.screenDim)
 
         # Title and icon
@@ -30,7 +32,7 @@ class Game:
         pygame.display.set_icon(icon)
 
         # map charge
-        tmx_data = pytmx.util_pygame.load_pygame('map.tmx')
+        tmx_data = pytmx.util_pygame.load_pygame('map-interieur.tmx')
         map_data = pyscroll.data.TiledMapData(tmx_data)
         map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
         #zzmap_layer.zoom = 2
@@ -60,6 +62,7 @@ class Game:
 
         self.numero_vague = 1
         self.vague_fini = True
+        self.wait = "non appuyé"
 
         #######################initialisation Menu################################
 
@@ -108,6 +111,7 @@ class Game:
         if pygame.mouse.get_pressed()[0]:
             if self.player.can_shoot():
                 self.bullet_group.add(self.player.create_bullet())
+        #print(self.player.smg_magazine)
 
         if pressed[pygame.K_1]:
             self.player.change_weapon('hand')
@@ -120,6 +124,11 @@ class Game:
             self.player.weapon = self.player.smg()
         if pressed[pygame.K_r]:
             self.player.reload()
+        if pressed[pygame.K_c]:
+            self.wait = "appuyé"
+        if self.wait == "appuyé" and not pressed[pygame.K_c]:
+            self.player.buy_munition()
+            self.wait = "non appuyé"
         if pressed[pygame.K_ESCAPE]:
             self.Menu("options", self.screen)
         #if pressed[pygame.K_x]:
@@ -140,7 +149,7 @@ class Game:
         self.group.update()
         self.bullet_group.update()
         self.enemy_group.update(self.player.position[0], self.player.position[1], self.zombies)
-        self.UI.update(self.player.munition, self.player.coin)
+        self.UI.update(self.player.munition, self.player.coin, self.player.score)
 
         # Gestion collision
         i = 0
@@ -157,6 +166,7 @@ class Game:
                         self.zombies.remove(zombie)
                 sprite.touche()
                 self.player.get_coin()
+                self.player.get_point()
 
         for sprite in self.group.sprites():
             if sprite.rect.collidelist(self.walls) > -1:
@@ -202,14 +212,16 @@ class Game:
 
             self.update()
             self.player.save_location()
+            for sprite in self.enemy_group:
+                sprite.save_location()
             self.handle_input()
-            self.group.center(self.player.rect)
             self.group.draw(self.screen)
             self.bullet_group.draw(self.screen)
             self.enemy_group.draw(self.screen)
             self.UI.render(self.screen)
             self.new_vague()
             self.dammages()
+
 
             # update the full display surface to the screen
             pygame.display.flip()

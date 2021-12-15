@@ -1,3 +1,5 @@
+import pygame
+
 class Score():
     def __init__(self, val=0):
         
