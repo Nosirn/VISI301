@@ -172,9 +172,10 @@ class Game:
             print("Le choix désiré n'existe pas.")
 
     def dammages(self):
-        for zombie in self.enemy_group():
-            if pygame.sprite.collide_rect(zombie,self.player):
+        for zombie in self.enemy_group.sprites():
+            if zombie.rect.colliderect(self.player.rect):
                 self.player.health = self.player.health -1
+                print(self.player.health)
 
     def dead(self):
         if self.player.health <= 0:
@@ -199,6 +200,7 @@ class Game:
             self.enemy_group.draw(self.screen)
             self.UI.render(self.screen)
             self.new_vague()
+            self.dammages()
 
             # update the full display surface to the screen
             pygame.display.flip()
