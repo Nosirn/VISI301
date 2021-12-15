@@ -16,6 +16,7 @@ class Enemy(pygame.sprite.Sprite):
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
         self.old_position = self.position.copy()
         self.speed = 1
+        self.cooldown = 0
 
     def get_position(self):
         return [self.position[0], self.position[1]]
@@ -88,3 +89,19 @@ class Enemy(pygame.sprite.Sprite):
 
     def touche(self):
         self.kill()
+
+    def tempo(self):
+        #méthode pour temporiser entre chaque coup de poing de zombie
+        if self.cooldown >= 90:
+            self.cooldown = 0
+        elif self.cooldown >= 0:
+            self.cooldown += 1
+
+    def can_hit(self):
+        #fonction pour permettre à l'enemie de taper
+
+        self.tempo()
+        return self.cooldown == 0
+        
+
+        

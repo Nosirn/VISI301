@@ -179,6 +179,7 @@ class Game:
         for zombie in self.enemy_group.sprites():
             if zombie.rect.colliderect(self.player.rect):
                 self.player.health = self.player.health -1
+                self.zombie.can_hit()
                 print(self.player.health)
 
     def dead(self):
