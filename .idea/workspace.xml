@@ -3,10 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="228f2df8-909d-45ad-ae9c-d980d905fe9d" name="Changes" comment="collision balle/zombie">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Inventory.py" beforeDir="false" afterPath="$PROJECT_DIR$/Inventory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/enemies.py" beforeDir="false" afterPath="$PROJECT_DIR$/enemies.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userinterface.py" beforeDir="false" afterPath="$PROJECT_DIR$/userinterface.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
