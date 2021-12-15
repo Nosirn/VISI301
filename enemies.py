@@ -1,12 +1,13 @@
 import pygame
 import math
 
+
 class Enemy(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         super().__init__()
         self.sprite_sheet = pygame.image.load('images/zombie.png')
-        self.image = pygame.transform.scale(self.sprite_sheet, (60, 60))
+        self.image = pygame.transform.scale(self.sprite_sheet, (55, 60))
         self.image_rotated = self.image
         #self.image = self.get_image(56, 0)
         self.image.set_colorkey([0, 0, 0])
@@ -92,16 +93,14 @@ class Enemy(pygame.sprite.Sprite):
 
     def tempo(self):
         #méthode pour temporiser entre chaque coup de poing de zombie
-        if self.cooldown >= 90:
+        if self.cooldown >= 50:
             self.cooldown = 0
-        elif self.cooldown >= 0:
+        elif self.cooldown > 0:
             self.cooldown += 1
 
-    def can_hit(self):
-        #fonction pour permettre à l'enemie de taper
 
-        self.tempo()
-        return self.cooldown == 0
+   
+        
         
 
         

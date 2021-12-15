@@ -5,6 +5,7 @@ import math
 import random
 import pygame_menu
 
+
 from bullet import Bullet
 from player import Player
 from enemies import Enemy
@@ -177,10 +178,13 @@ class Game:
 
     def dammages(self):
         for zombie in self.enemy_group.sprites():
-            if zombie.rect.colliderect(self.player.rect):
-                self.player.health = self.player.health -1
-                self.zombie.can_hit()
+            zombie.tempo()
+            if zombie.rect.colliderect(self.player.rect) and zombie.cooldown == 0:
+                self.player.health = self.player.health - 1
+                zombie.cooldown = 1
+                
                 print(self.player.health)
+            
 
     def dead(self):
         if self.player.health <= 0:
