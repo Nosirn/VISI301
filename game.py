@@ -11,7 +11,6 @@ from bullet import Bullet
 from player import Player
 from enemies import Enemy
 from userinterface import UserInterface
-from Score import Score
 
 
 
@@ -34,7 +33,7 @@ class Game:
         # map charge
         tmx_data = pytmx.util_pygame.load_pygame('map-interieur.tmx')
         map_data = pyscroll.data.TiledMapData(tmx_data)
-        map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
+        map_layer = pyscroll.orthographic.BufferedRenderer(map_data, (900, 900))
         #zzmap_layer.zoom = 2
 
         # generate player
@@ -43,7 +42,7 @@ class Game:
 
         # user interface
 
-        self.UI = UserInterface(self.player.munition, self.player.coin)
+        self.UI = UserInterface(self.player.munition, self.player.coin, self.player.smg_magazine, self.player.pistol_magazine)
 
         # Collision
         self.bullets = []
@@ -69,8 +68,8 @@ class Game:
         ## Promo autres groupes
         self.secret = pygame_menu.Menu("Les jeux des CMI", self.screenDim[0], self.screenDim[1],
                                   theme=pygame_menu.themes.THEME_GREEN)
-        path_groupe1 = "groupe1.png"
-        path_groupe2 = "groupe2.png"
+        path_groupe1 = "images/groupe1.png"
+        path_groupe2 = "images/groupe2.png"
         self.secret.add.image(path_groupe1, scale=(self.screenDim[0] / 1280 * 0.5, self.screenDim[1] / 720 * 0.5))
         self.secret.add.image(path_groupe2, scale=(self.screenDim[0] / 1280 * 0.5, self.screenDim[1] / 720 * 0.5))
         ## manque un moyen de quitter (W.I.P.)
@@ -96,6 +95,7 @@ class Game:
         self.mort.add.button('Relancer une partie')  # Ajouter l'option pour relancer une partie ? ('...', Fonction)
         self.mort.add.button('Quitter le jeu', pygame_menu.events.EXIT)
 
+
     def handle_input(self):
         pressed = pygame.key.get_pressed()
 
@@ -107,11 +107,10 @@ class Game:
             self.player.move_left()
         if pressed[pygame.K_d]:
             self.player.move_right()
-
         if pygame.mouse.get_pressed()[0]:
             if self.player.can_shoot():
+                self.player.remove_bullet_magazine()
                 self.bullet_group.add(self.player.create_bullet())
-        #print(self.player.smg_magazine)
 
         if pressed[pygame.K_1]:
             self.player.change_weapon('hand')
@@ -149,7 +148,7 @@ class Game:
         self.group.update()
         self.bullet_group.update()
         self.enemy_group.update(self.player.position[0], self.player.position[1], self.zombies)
-        self.UI.update(self.player.munition, self.player.coin, self.player.score)
+        self.UI.update(self.player.munition, self.player.coin, self.player.score, self.player.smg_magazine, self.player.pistol_magazine)
 
         # Gestion collision
         i = 0
@@ -169,6 +168,9 @@ class Game:
                 self.player.get_point()
 
         for sprite in self.group.sprites():
+            if sprite.rect.collidelist(self.walls) > -1:
+                sprite.move_back()
+        for sprite in self.enemy_group.sprites():
             if sprite.rect.collidelist(self.walls) > -1:
                 sprite.move_back()
 
@@ -221,6 +223,7 @@ class Game:
             self.UI.render(self.screen)
             self.new_vague()
             self.dammages()
+            print(self.player.weapon_name)
 
 
             # update the full display surface to the screen

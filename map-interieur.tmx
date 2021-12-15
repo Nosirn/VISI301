@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="24">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="55">
  <tileset firstgid="1" source="map_tileset/grass.tsx"/>
  <tileset firstgid="281" source="map_tileset/tileset.tsx"/>
  <layer id="1" name="background" width="50" height="50">
@@ -145,5 +145,23 @@
   <object id="23" name="spawn_zombie6" x="425" y="773">
    <point/>
   </object>
+  <object id="31" type="collision" x="318.5" y="272.5" width="130.5" height="30.5"/>
+  <object id="32" type="collision" x="447" y="272" width="17" height="15.5"/>
+  <object id="33" type="collision" x="446.5" y="288.5" width="33" height="27.5"/>
+  <object id="34" type="collision" x="461" y="316.5" width="17.5" height="15.5"/>
+  <object id="35" type="collision" x="304.5" y="272.5" width="17.5" height="15"/>
+  <object id="36" type="collision" x="288" y="288.5" width="32" height="29"/>
+  <object id="37" type="collision" x="287" y="315.5" width="15" height="18.5"/>
+  <object id="38" type="collision" x="587" y="149" width="75" height="28"/>
+  <object id="39" type="collision" x="611" y="176" width="27" height="13.5"/>
+  <object id="40" type="collision" x="149" y="114.5" width="85" height="28.5"/>
+  <object id="41" type="collision" x="225" y="143.5" width="44.5" height="14"/>
+  <object id="44" type="collision" x="238.5" y="156" width="30.5" height="17.5"/>
+  <object id="45" type="collision" x="234.5" y="120.5" width="20" height="22"/>
+  <object id="48" type="collision" x="115.5" y="144.5" width="42.5" height="13.5"/>
+  <object id="49" type="collision" x="114.5" y="160" width="27.5" height="14.5"/>
+  <object id="50" type="collision" x="142" y="120.5" width="7.5" height="24.5"/>
+  <object id="51" type="collision" x="125.5" y="130.5" width="16.5" height="14"/>
+  <object id="53" type="collision" x="578.667" y="588.667" width="53.3333" height="31.3333"/>
  </objectgroup>
 </map>

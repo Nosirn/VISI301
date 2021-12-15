@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.munition = 50
         self.pistol_magazine = 0
         self.smg_magazine = 0
-        self.magazine = 0
+        self.weapon_name = "pistol"
         self.cool_down_count = 0
         self.player_kill = False
         self.coin = 0
@@ -45,6 +45,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         '''met à jour le sprite'''
+        print(self.smg_magazine)
         posMouseX = pygame.mouse.get_pos()[0]
         posMouseY = pygame.mouse.get_pos()[1]
         deltaY = posMouseY - self.position[1]
@@ -78,15 +79,26 @@ class Player(pygame.sprite.Sprite):
 
     def can_shoot(self):
         self.cooldown(10)
-        return self.magazine > 0 and self.cool_down_count == 0
+        if self.weapon_name == "smg":
+            return self.smg_magazine > 0 and self.cool_down_count == 0
+        elif self.weapon_name == "pistol":
+            return self.pistol_magazine > 0 and self.cool_down_count == 0
+
 
     def create_bullet(self):
         '''apelle une bullet'''
-        self.magazine -= 1
-        self.cool_down_count = 1
         bullet_sound = mixer.Sound('son/tir.wav')
         bullet_sound.play()
         return Bullet(self.position[0], self.position[1])
+
+    def remove_bullet_magazine(self):
+        if self.weapon_name == "pistol":
+            self.pistol_magazine -= 1
+            self.cool_down_count = 1
+        elif self.weapon_name == "smg":
+            self.smg_magazine -= 1
+            self.cool_down_count = 1
+
 
     def change_weapon(self, skin):
         '''change le skin selon l'arme'''
@@ -97,25 +109,39 @@ class Player(pygame.sprite.Sprite):
     def pistol(self):
         '''capacité du chargeur'''
         self.capacity_max = 7
-        self.magazine = 0
+        self.weapon_name = "pistol"
 
 
     def smg(self):
         '''capacité du chargeur'''
         self.capacity_max = 20
-        self.magazine = 0
+        self.weapon_name = "smg"
 
     def hand(self):
         '''capacité du chargeur'''
+        self.weapon_choose("hand")
         self.capacity_max = 0
         self.magazine = 0
 
+    def weapon_choose(self, weapon):
+        if weapon == "pistol":
+            res = self.pistol_magazine
+        elif weapon == "smg":
+            res = self.smg_magazine
+        else:
+            res = 0
+        return res
+
     def reload(self):
-        while self.magazine < self.capacity_max and self.munition > 0:
-            self.magazine += 1
-            self.munition -= 1
-        print("chargeur", self.magazine)
-        print("mun restantes", self.munition)
+        if self.weapon_name == "smg":
+            while self.smg_magazine < self.capacity_max and self.munition > 0:
+                self.smg_magazine += 1
+                self.munition -= 1
+        elif self.weapon_name == "pistol":
+            while self.pistol_magazine < self.capacity_max and self.munition > 0:
+                self.pistol_magazine += 1
+                self.munition -= 1
+
 
     def get_coin(self):
         self.coin += 1
