@@ -173,6 +173,8 @@ class Game:
         else:
             print("Le choix désiré n'existe pas.")
 
+            
+
     def dammages(self):
         for zombie in self.enemy_group.sprites():
             if zombie.rect.colliderect(self.player.rect):

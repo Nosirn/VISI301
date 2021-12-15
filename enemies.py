@@ -1,11 +1,14 @@
 import pygame
+import math
 
 class Enemy(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         super().__init__()
-        self.sprite_sheet = pygame.image.load('images/soldier.png')
-        self.image = self.get_image(0, 0)
+        self.sprite_sheet = pygame.image.load('images/zombie.png')
+        self.image = pygame.transform.scale(self.sprite_sheet, (60, 60))
+        self.image_rotated = self.image
+        #self.image = self.get_image(56, 0)
         self.image.set_colorkey([0, 0, 0])
         self.rect = self.image.get_rect()
         self.position = [x, y]
@@ -45,6 +48,9 @@ class Enemy(pygame.sprite.Sprite):
         return image
 
     def follow_player(self, player_x, player_y):
+        #gère le mouvement du zombie, et sa rotation par rapport au joueur
+
+        
         self.player_kill = False
         if self.get_position()[0] > player_x:
             self.move_left()
@@ -61,6 +67,20 @@ class Enemy(pygame.sprite.Sprite):
         
         if self.get_position()[0] == player_x or self.get_position()[1]:
             self.player_kill = True
+
+        #calcul d'angle pour faire tourner le sprite
+        playerX = player_x
+        playerY = player_y
+        deltaX = playerX - self.get_position()[0]
+        deltaY = playerY - self.get_position()[1]
+        
+        aglD = math.atan2(deltaY , deltaX) * 180 / math.pi
+        aglD = aglD + 90
+
+        self.rect.topleft = self.position
+        self.image = pygame.transform.rotozoom(self.image_rotated, -aglD, 1)
+        self.rect = self.image.get_rect(center = (self.position[0],self.position[1]))
+        self.image.set_colorkey([0, 0, 0])
 
 
     def update_health_bar(self, surface):
