@@ -18,32 +18,24 @@ Joueur :
 
 Zombies :
 
-- ils se déplacent vers une cible (le joueur ou la base et le joueur selon le mode)
-- différents type de zombie
+- ils se déplacent vers le joueur
 - les zombies arrivent par vagues
 
 Objets :
 
 - on peut acheter des objets avec l'argent que l'on a
 - armes
-- potion d'armure
-- boost consommable sur une durée
 - éléments interactif (posable, pièges, zone de soin)
 
 
 Map :
 
 - murs
-- lac
 - cache (accessible par le joueur mais pas par le zombie) / inverse possible
-- armurerie pour acheter les objest
-- base ?
+- armurerie pour acheter les objets (munitions)
 - zones déblocables selon une condition ( argent et autre)
 - éléments interactif ( pour débloquer des zones)
 
-base :
-
-- un grand nombre de PV
 
 Installation packages:
 

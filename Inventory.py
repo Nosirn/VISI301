@@ -10,8 +10,8 @@ class Inventory:
 
         self.slots.append(InventorySlot("images/coin.png",(580, 723), coin))
         self.slots.append(InventorySlot("images/gun.png",(620, 723), pistol_mag))
-        self.slots.append(InventorySlot("images/machine-gun.png", (660, 723), smg_mag))
-        self.slots.append(InventorySlot("images/munition.png",(700, 723), mun))
+        self.slots.append(InventorySlot("images/machine-gun.png", (670, 723), smg_mag))
+        self.slots.append(InventorySlot("images/munition.png",(715, 723), mun))
 
 
     def render(self, screen):

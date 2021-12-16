@@ -33,16 +33,21 @@ class Game:
         # map charge
         tmx_data = pytmx.util_pygame.load_pygame('map-interieur.tmx')
         map_data = pyscroll.data.TiledMapData(tmx_data)
-        map_layer = pyscroll.orthographic.BufferedRenderer(map_data, (900, 900))
-        #zzmap_layer.zoom = 2
+        map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
 
         # generate player
         player_position = tmx_data.get_object_by_name("player")
         self.player = Player(player_position.x, player_position.y)
 
+        #var
+
+        self.numero_vague = 0
+        self.vague_fini = True
+        self.wait = "non appuyé"
+
         # user interface
 
-        self.UI = UserInterface(self.player.munition, self.player.coin, self.player.smg_magazine, self.player.pistol_magazine)
+        self.UI = UserInterface(self.player.munition, self.player.coin, self.player.smg_magazine, self.player.pistol_magazine, self.numero_vague)
 
         # Collision
         self.bullets = []
@@ -59,9 +64,7 @@ class Game:
         self.bullet_group = pygame.sprite.Group()
         self.enemy_group = pygame.sprite.Group()
 
-        self.numero_vague = 1
-        self.vague_fini = True
-        self.wait = "non appuyé"
+
 
         #######################initialisation Menu################################
 
@@ -75,7 +78,7 @@ class Game:
         ## manque un moyen de quitter (W.I.P.)
 
         ## Menu des options
-        self.options = pygame_menu.Menu("Options", self.screenDim[0], self.screenDim[1], theme=pygame_menu.themes.THEME_GREEN)
+        self.options = pygame_menu.Menu("options", self.screenDim[0], self.screenDim[1], theme=pygame_menu.themes.THEME_GREEN)
         self.options.add.range_slider('Musique', 50, (0, 100), 1, rangeslider_id="music", value_format=lambda x: str(int(x)))
         self.options.add.range_slider('Effets sonore', 50, (0, 100), 1, rangeslider_id="sfx",
                                  value_format=lambda x: str(int(x)))
@@ -83,18 +86,49 @@ class Game:
         self.options.add.button('Quitter le jeu', pygame_menu.events.EXIT)
         ## manque un moyen de quitter (W.I.P.)
 
+        ## Menu des options
+        self.options = pygame_menu.Menu("Options", self.screenDim[0], self.screenDim[1],
+                                        theme=pygame_menu.themes.THEME_GREEN)
+        self.options.add.range_slider('Musique', 50, (0, 100), 1, rangeslider_id="music",
+                                      value_format=lambda x: str(int(x)))
+        self.options.add.range_slider('Effets sonore', 50, (0, 100), 1, rangeslider_id="sfx",
+                                      value_format=lambda x: str(int(x)))
+        self.options.add.button('commandes', self.show_control)
+        self.options.add.button('retour au jeu', self.start)
+        self.options.add.button('Quitter le jeu', pygame_menu.events.EXIT)
+
+        ## Menu des controles
+        self.control = pygame_menu.Menu("Commandes", self.screenDim[0], self.screenDim[1],
+                                        theme=pygame_menu.themes.THEME_GREEN)
+        self.control.add.text_input('haut : ', default='z')
+        self.control.add.text_input('bas : ', default='s')
+        self.control.add.text_input('gauche : ', default='q')
+        self.control.add.text_input('droite : ', default='d')
+        self.control.add.text_input('rechargement : ', default='r')
+        self.control.add.text_input('acheter des munitions : ', default='c')
+        self.control.add.text_input('poing : ', default='1')
+        self.control.add.text_input('Pistolet : ', default='2')
+        self.control.add.text_input('mitraillette : ', default='3')
+        self.control.add.button('retour', self.start)
+        self.control.add.button('Quitter le jeu', pygame_menu.events.EXIT)
+        ## manque un moyen de quitter (W.I.P.)
+
         ## Menu principal
         self.principal = pygame_menu.Menu("Bienvenue !", self.screenDim[0], self.screenDim[1],
                                      theme=pygame_menu.themes.THEME_BLUE)
         self.principal.add.text_input('Nom du Perso : ', default='Billy')
         self.principal.add.button('Lancer la partie', self.start)
+        self.principal.add.button('commandes', self.show_control)
         self.principal.add.button('Quitter le jeu', pygame_menu.events.EXIT)  # Quitter
 
         self.mort = pygame_menu.Menu("Vous êtes mort D:", self.screenDim[0], self.screenDim[1],
                                 theme=pygame_menu.themes.THEME_DARK)
-        self.mort.add.button('Relancer une partie')  # Ajouter l'option pour relancer une partie ? ('...', Fonction)
+        #self.mort.add.button('Relancer une partie')  # Ajouter l'option pour relancer une partie ?
         self.mort.add.button('Quitter le jeu', pygame_menu.events.EXIT)
 
+
+    def show_control(self):
+        self.Menu("control", self.screen)
 
     def handle_input(self):
         pressed = pygame.key.get_pressed()
@@ -135,8 +169,20 @@ class Game:
 
     def vagues(self, taille_vague):
         for i in range(0, taille_vague):
-            self.enemy_group.add(Enemy(random.randint(100, 700), random.randint(100, 700)))
-            self.zombies.append(pygame.Rect(0, 0, 64, 64))
+            if random.randint(0,1) == 0:
+                if random.randint(0,1) == 0:
+                    self.spawn(random.randint(50,700), 50)
+                else:
+                    self.spawn(random.randint(50, 700), 700)
+            else:
+                if random.randint(0,1) == 0:
+                    self.spawn(50, random.randint(50,700))
+                else:
+                    self.spawn(700, random.randint(50,700))
+
+    def spawn(self, x, y):
+        self.enemy_group.add(Enemy(x,y))
+        self.zombies.append(pygame.Rect(0, 0, 56, 60))
 
     def new_vague(self):
         if len(self.enemy_group) == 0:
@@ -148,7 +194,7 @@ class Game:
         self.group.update()
         self.bullet_group.update()
         self.enemy_group.update(self.player.position[0], self.player.position[1], self.zombies)
-        self.UI.update(self.player.munition, self.player.coin, self.player.score, self.player.smg_magazine, self.player.pistol_magazine)
+        self.UI.update(self.player.munition, self.player.coin, self.player.score, self.player.smg_magazine, self.player.pistol_magazine, self.numero_vague)
 
         # Gestion collision
         i = 0
@@ -183,6 +229,8 @@ class Game:
             self.options.mainloop(surface)
         elif choix == "secret":
             self.secret.mainloop(surface)
+        elif choix == "control":
+            self.control.mainloop(surface)
         else:
             print("Le choix désiré n'existe pas.")
 

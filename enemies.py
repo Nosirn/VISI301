@@ -7,9 +7,8 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         self.sprite_sheet = pygame.image.load('images/zombie.png')
-        self.image = pygame.transform.scale(self.sprite_sheet, (55, 60))
+        self.image = pygame.transform.scale(self.sprite_sheet, (40, 48))
         self.image_rotated = self.image
-        #self.image = self.get_image(56, 0)
         self.image.set_colorkey([0, 0, 0])
         self.rect = self.image.get_rect()
         self.position = [x, y]

@@ -71,6 +71,7 @@ class Player(pygame.sprite.Sprite):
 
         return image
 
+
     def cooldown(self, delai):
         if self.cool_down_count >= delai:
             self.cool_down_count = 0
