@@ -14,7 +14,6 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.position = [x, y]
         self.change_position = [0, 0]
-        self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
         self.old_position = self.position.copy()
         self.speed = 1
         self.cooldown = 0
@@ -34,15 +33,13 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self, player_x, player_y):
         self.rect.topleft = self.position
-        self.feet.midbottom = self.rect.midbottom
         self.follow_player(player_x,player_y)
 
 
     # Replace le sprite à son ancienne position si il atteind une zone de collision
     def move_back(self):
         self.position = self.old_position
-        self.rect.topleft = self.position
-        self.feet.midbottom = self.rect.midbottom
+        self.rect.center = self.position
 
     def get_image(self, x, y):
         image = pygame.Surface([64, 64])
@@ -81,8 +78,8 @@ class Enemy(pygame.sprite.Sprite):
 
         self.rect.topleft = self.position
         self.image = pygame.transform.rotozoom(self.image_rotated, -aglD, 1)
-        self.rect = self.image.get_rect(center = (self.position[0],self.position[1]))
-        self.image.set_colorkey([0, 0, 0])
+        self.rect = self.image.get_rect(center = (self.position))
+        self.image.set_colorkey([255, 255, 255])
 
 
     def update_health_bar(self, surface):

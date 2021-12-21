@@ -85,7 +85,7 @@ class Player(pygame.sprite.Sprite):
 
     def create_bullet(self):
         '''apelle une bullet'''
-        self.bullet_sound.play()
+        #self.bullet_sound.play()
         return Bullet(self.position[0], self.position[1])
 
     def remove_bullet_magazine(self):
@@ -107,7 +107,7 @@ class Player(pygame.sprite.Sprite):
         '''capacité du chargeur'''
         self.capacity_max = 7
         self.weapon_name = "pistol"
-        self.delai = 50
+        self.delai = 10
         self.bullet_sound = mixer.Sound('son/shoot_gun.wav')
 
 
