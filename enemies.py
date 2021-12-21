@@ -6,6 +6,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         super().__init__()
+        self.radius = 20
         self.sprite_sheet = pygame.image.load('images/zombie.png')
         self.image = pygame.transform.scale(self.sprite_sheet, (40, 48))
         self.image_rotated = self.image
@@ -31,7 +32,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def move_down(self): self.change_position[1] += self.speed
 
-    def update(self, player_x, player_y, liste_rect):
+    def update(self, player_x, player_y):
         self.rect.topleft = self.position
         self.feet.midbottom = self.rect.midbottom
         self.follow_player(player_x,player_y)

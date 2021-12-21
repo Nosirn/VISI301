@@ -30,20 +30,18 @@ class Game:
         icon = pygame.image.load('images/zombie.png')
         pygame.display.set_icon(icon)
 
-        # map charge
-        tmx_data = pytmx.util_pygame.load_pygame('map-interieur.tmx')
-        map_data = pyscroll.data.TiledMapData(tmx_data)
-        map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
-
         # generate player
-        player_position = tmx_data.get_object_by_name("player")
-        self.player = Player(player_position.x, player_position.y)
+        self.player = Player(300,300)
 
+
+        #generate the map
+        self.map = pygame.image.load('images/map.png')
         #var
 
         self.numero_vague = 0
         self.vague_fini = True
         self.wait = "non appuyé"
+        self.wall_radius = 25
 
         # user interface
 
@@ -51,16 +49,22 @@ class Game:
 
         # Collision
         self.bullets = []
-        self.zombies = []
         self.walls = []
+        for i in range(0,801, 800):
+            for j in range(20,800, 20):
+                self.walls.append([i, j])
+        for i in range(0,801, 800):
+            for j in range(20,800, 20):
+                self.walls.append([j, i])
+        print(self.walls)
         self.test = []
-        for obj in tmx_data.objects:
-            if obj.type == "collision":
-                self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+        #for obj in tmx_data.objects:
+         #   if obj.type == "collision":
+          #      self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
 
         # calques
-        self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=4)
-        self.group.add(self.player)
+        self.player_group = pygame.sprite.Group()
+        self.player_group.add(self.player)
         self.bullet_group = pygame.sprite.Group()
         self.enemy_group = pygame.sprite.Group()
 
@@ -182,43 +186,56 @@ class Game:
 
     def spawn(self, x, y):
         self.enemy_group.add(Enemy(x,y))
-        self.zombies.append(pygame.Rect(0, 0, 56, 60))
 
     def new_vague(self):
         if len(self.enemy_group) == 0:
             self.vagues(self.numero_vague)
             self.numero_vague += 1
 
+    def collision_circle(self, sprite, list):
+        collision = False
+        for wall in list:
+            distance = math.hypot(sprite.position[0] - wall[0], sprite.position[1] - wall[1])
+            if distance <= sprite.radius + self.wall_radius:
+                print("collision")
+                collision = True
+        return collision
 
     def update(self):
-        self.group.update()
+        self.player_group.update()
         self.bullet_group.update()
-        self.enemy_group.update(self.player.position[0], self.player.position[1], self.zombies)
+        self.enemy_group.update(self.player.position[0], self.player.position[1])
         self.UI.update(self.player.munition, self.player.coin, self.player.score, self.player.smg_magazine, self.player.pistol_magazine, self.numero_vague)
 
         # Gestion collision
         i = 0
         for sprite in self.enemy_group:
             sprite.update_health_bar(self.screen)
-            self.zombies[i] = sprite.rect
             i += 1
 
         for sprite in self.bullet_group.sprites():
-            if sprite.rect.collidelist(self.zombies) > -1:
-                for zombie in self.enemy_group.sprites():
-                    if pygame.sprite.collide_rect(zombie, sprite):
-                        zombie.touche()
-                        self.zombies.remove(zombie)
-                sprite.touche()
-                self.player.get_coin()
-                self.player.get_point()
+            for enemy in self.enemy_group:
+                distance = math.hypot(sprite.pos[0] - enemy.position[0], sprite.pos[1] - enemy.position[1])
+                if distance <= sprite.radius + enemy.radius:
+                    enemy.touche()
+                    sprite.touche()
+                    self.player.get_coin()
+                    self.player.get_point()
 
-        for sprite in self.group.sprites():
-            if sprite.rect.collidelist(self.walls) > -1:
-                sprite.move_back()
-        for sprite in self.enemy_group.sprites():
-            if sprite.rect.collidelist(self.walls) > -1:
-                sprite.move_back()
+        if self.collision_circle(self.player, self.walls):
+            self.player.move_back()
+        for enemy in self.enemy_group:
+            if self.collision_circle(enemy, self.walls):
+                enemy.move_back()
+
+        #for enemy in self.enemy_group:
+         #   if self.collision_circle(enemy, self.enemy_group):
+         #       print("ok")
+
+
+
+        pygame.draw.circle(self.screen, (255,228,196, 255), (self.player.position[0], self.player.position[1]), 25, 0)
+
 
     def Menu(self, choix, surface):
         if choix == "principal":
@@ -261,17 +278,23 @@ class Game:
         while alive:
 
             self.update()
-            self.player.save_location()
             for sprite in self.enemy_group:
                 sprite.save_location()
+                pygame.draw.circle(self.screen, (255,228,196, 255),(sprite.position[0], sprite.position[1]), 20, 0)
+            for bullet in self.bullet_group:
+                pygame.draw.circle(self.screen, (0,0,0,255), (bullet.pos[0], bullet.pos[1]), 5, 0)
+            self.screen.fill((0, 0, 0))
+            self.screen.blit(self.map, (0, 0))
+            self.player.save_location()
             self.handle_input()
-            self.group.draw(self.screen)
+            self.player_group.draw(self.screen)
+            for wall in self.walls:
+                pygame.draw.circle(self.screen, (255, 255, 255, 255), (wall[0], wall[1]), 25, 0)
             self.bullet_group.draw(self.screen)
             self.enemy_group.draw(self.screen)
             self.UI.render(self.screen)
             self.new_vague()
             self.dammages()
-            print(self.player.weapon_name)
 
 
             # update the full display surface to the screen

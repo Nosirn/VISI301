@@ -7,13 +7,13 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         super().__init__()
+        self.radius = 25
         self.sprite_sheet = pygame.image.load('images/spritejoueur.png')
         self.image = self.get_image(56, 0)
         self.image_rotated = self.image
         self.image.set_colorkey([0, 0, 0])
         self.rect = self.image.get_rect()
         self.position = [x, y]
-        #self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
         self.old_position = self.position.copy()
         self.images = {'hand' : self.get_image(0,0),
                        'pistol' : self.get_image(56,0),
@@ -45,7 +45,6 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         '''met à jour le sprite'''
-        print(self.smg_magazine)
         posMouseX = pygame.mouse.get_pos()[0]
         posMouseY = pygame.mouse.get_pos()[1]
         deltaY = posMouseY - self.position[1]
@@ -55,19 +54,18 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.topleft = self.position
         self.image = pygame.transform.rotozoom(self.image_rotated, -angleInDegrees, 1)
-        self.rect = self.image.get_rect(center = (self.position[0],self.position[1]))
+        self.rect = self.image.get_rect(center = self.position)
         self.image.set_colorkey([0, 0, 0])
 
     def move_back(self):
         '''Replace le joueur à son ancienne position si il atteint une zone de collision'''
         self.position = self.old_position
         self.rect.center = self.position
-        #self.feet.midbottom = self.rect.midbottom
 
     def get_image(self, x, y):
         '''dessine le srite'''
-        image = pygame.Surface([55, 95])
-        image.blit(self.sprite_sheet, (0, 0), (x, y, 55, 95))
+        image = pygame.Surface([55, 130])
+        image.blit(self.sprite_sheet, (0, 0), (x, y, 55, 130))
 
         return image
 
@@ -79,17 +77,15 @@ class Player(pygame.sprite.Sprite):
             self.cool_down_count += 1
 
     def can_shoot(self):
-        self.cooldown(10)
+        self.cooldown(self.delai)
         if self.weapon_name == "smg":
             return self.smg_magazine > 0 and self.cool_down_count == 0
         elif self.weapon_name == "pistol":
             return self.pistol_magazine > 0 and self.cool_down_count == 0
 
-
     def create_bullet(self):
         '''apelle une bullet'''
-        bullet_sound = mixer.Sound('son/tir.wav')
-        bullet_sound.play()
+        self.bullet_sound.play()
         return Bullet(self.position[0], self.position[1])
 
     def remove_bullet_magazine(self):
@@ -111,12 +107,16 @@ class Player(pygame.sprite.Sprite):
         '''capacité du chargeur'''
         self.capacity_max = 7
         self.weapon_name = "pistol"
+        self.delai = 50
+        self.bullet_sound = mixer.Sound('son/shoot_gun.wav')
 
 
     def smg(self):
         '''capacité du chargeur'''
         self.capacity_max = 20
         self.weapon_name = "smg"
+        self.delai = 10
+        self.bullet_sound = mixer.Sound('son/shoot_gun.wav')
 
     def hand(self):
         '''capacité du chargeur'''

@@ -8,6 +8,7 @@ class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
         '''x et y la position de la balle '''
         super().__init__()
+        self.radius = 5
         self.pos = [x, y]
         self.image = pygame.image.load('images/round_bullet.png')
         self.image.set_colorkey([255, 255, 255])
