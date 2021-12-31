@@ -154,7 +154,7 @@ class Game:
 
         self.mort = pygame_menu.Menu("Vous êtes mort D:", self.screenDim[0], self.screenDim[1],
                                 theme=pygame_menu.themes.THEME_DARK)
-        # self.mort.add.button('Relancer une partie')  # Ajouter l'option pour relancer une partie ?
+        self.mort.add.text_input("Vagues réussi : ", self.numero_vague)
         self.mort.add.button('Quitter le jeu', pygame_menu.events.EXIT)
 
     def show_control(self):
@@ -232,11 +232,6 @@ class Game:
         self.UI.update(self.player.munition, self.player.coin, self.player.score, self.player.smg_magazine, self.player.pistol_magazine, self.numero_vague)
 
         # Gestion collision
-        i = 0
-        for sprite in self.enemy_group:
-            sprite.update_health_bar(self.screen)
-            i += 1
-
         for sprite in self.bullet_group.sprites():
             for enemy in self.enemy_group:
                 distance = math.hypot(sprite.pos[0] - enemy.position[0], sprite.pos[1] - enemy.position[1])
@@ -312,19 +307,19 @@ class Game:
         alive = True
         while alive:
 
-            self.update()
+            for wall in self.walls:
+                pygame.draw.circle(self.screen, (255, 255, 255, 255), (wall[0], wall[1]), 25, 0)
             for sprite in self.enemy_group:
                 sprite.save_location()
                 pygame.draw.circle(self.screen, (255, 228, 96, 255), (sprite.position[0], sprite.position[1]), 20, 0)
             for bullet in self.bullet_group:
                 pygame.draw.circle(self.screen, (0, 0, 0, 255), (bullet.pos[0], bullet.pos[1]), 5, 0)
+            self.update()
             self.screen.fill((0, 0, 0))
             self.screen.blit(self.map, (0, 0))
             self.player.save_location()
             self.handle_input()
             self.player_group.draw(self.screen)
-            for wall in self.walls:
-                pygame.draw.circle(self.screen, (255, 255, 255, 255), (wall[0], wall[1]), 25, 0)
             self.bullet_group.draw(self.screen)
             self.enemy_group.draw(self.screen)
             self.UI.render(self.screen)

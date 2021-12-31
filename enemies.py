@@ -82,9 +82,6 @@ class Enemy(pygame.sprite.Sprite):
         self.image.set_colorkey([255, 255, 255])
 
 
-    def update_health_bar(self, surface):
-        pygame.draw.rect(surface, (111, 210, 46), self.rect)
-
     def touche(self):
         self.kill()
 
