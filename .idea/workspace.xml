@@ -1,25 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="228f2df8-909d-45ad-ae9c-d980d905fe9d" name="Changes" comment="supp fichiers">
-      <change afterPath="$PROJECT_DIR$/son/buy.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/son/croc.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_14_12_2021_13_05_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_14_12_2021_13_05__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_14_12_2021_21_19_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_14_12_2021_21_19__Changes_.xml" beforeDir="false" />
+    <list default="true" id="228f2df8-909d-45ad-ae9c-d980d905fe9d" name="Changes" comment="petite modif">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bullet.py" beforeDir="false" afterPath="$PROJECT_DIR$/bullet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/enemies.py" beforeDir="false" afterPath="$PROJECT_DIR$/enemies.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/bullet.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/map.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/map.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/player.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/rifle.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/son/reload.wav" beforeDir="false" afterPath="$PROJECT_DIR$/son/reload.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/son/shoot_gun.wav" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -307,7 +292,28 @@
       <option name="project" value="LOCAL" />
       <updated>1640104875206</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="regen auto + sons + collisions">
+      <created>1640909929136</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1640909929136</updated>
+    </task>
+    <task id="LOCAL-00026" summary="ajout UI">
+      <created>1640910870077</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1640910870077</updated>
+    </task>
+    <task id="LOCAL-00027" summary="petite modif">
+      <created>1640911965901</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1640911965901</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -323,7 +329,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="relecture game.py" />
     <MESSAGE value="ajout de la fonction zombie_touche&#10;&#10;&#10;renvoit un booleen pour savoir si le zombie est touché par la balle" />
     <MESSAGE value="ajout de la fontion disparition_sprite&#10;&#10;à tester quand celle de zombie_touche marchera" />
     <MESSAGE value="test fonction disparait quand touche = True&#10;&#10;ça marche bien, mais la fonction collision toujours pas, à revoir" />
@@ -346,6 +351,9 @@
     <MESSAGE value="changement collision" />
     <MESSAGE value="nouveau changement collision" />
     <MESSAGE value="supp fichiers" />
-    <option name="LAST_COMMIT_MESSAGE" value="supp fichiers" />
+    <MESSAGE value="regen auto + sons + collisions" />
+    <MESSAGE value="ajout UI" />
+    <MESSAGE value="petite modif" />
+    <option name="LAST_COMMIT_MESSAGE" value="petite modif" />
   </component>
 </project>

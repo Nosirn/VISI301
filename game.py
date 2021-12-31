@@ -21,7 +21,7 @@ class Game:
 
         # create the screen
         self.screenDim = (800, 800)
-        self.screen = pygame.display.set_mode(self.screenDim)
+        self.screen = pygame.display.set_mode(self.screenDim, )
 
         # Title and icon
         pygame.display.set_caption("CMI-zombie")
@@ -154,7 +154,7 @@ class Game:
 
         self.mort = pygame_menu.Menu("Vous êtes mort D:", self.screenDim[0], self.screenDim[1],
                                 theme=pygame_menu.themes.THEME_DARK)
-        self.mort.add.text_input("Vagues réussi : ", self.numero_vague)
+        #self.mort.add.text_input("Vagues réussi : ", self.numero_vague)
         self.mort.add.button('Quitter le jeu', pygame_menu.events.EXIT)
 
     def show_control(self):
@@ -246,27 +246,25 @@ class Game:
         for enemy in self.enemy_group:
             if self.collision_circle(enemy, self.walls):
                 col = enemy.position
-                if col[0] >= enemy.position[0] and col[1] >= enemy.position[1]:
+                enemy.move_back()
+                if col[0] >= enemy.position[0] and col[1] > enemy.position[1]:
                     enemy.position[0] -= 2
-                    enemy.position[1] -= 2
-                    enemy.position[1] += 1
-                elif col[0] >= enemy.position[0] and col[1] <= enemy.position[1]:
-                    enemy.position[0] -= 2
+                    enemy.position[1] -= 1
+                elif col[0] > enemy.position[0] and col[1] <= enemy.position[1]:
+                    enemy.position[0] -= 1
                     enemy.position[1] += 2
+                elif col[0] < enemy.position[0] and col[1] <= enemy.position[1]:
                     enemy.position[0] += 1
-                elif col[0] <= enemy.position[0] and col[1] <= enemy.position[1]:
-                    enemy.position[0] += 2
-                    enemy.position[1] -= 2
-                    enemy.position[1] += 1
-                elif col[0] <= enemy.position[0] and col[1] >= enemy.position[1]:
-                    enemy.position[0] += 2
                     enemy.position[1] += 2
-                    enemy.position[0] += 1
+                elif col[0] <= enemy.position[0] and col[1] > enemy.position[1]:
+                    enemy.position[0] += 2
+                    enemy.position[1] -= 1
 
         if self.player.munition == 0:
             self.UI.no_mun = True
         else:
             self.UI.no_mun = False
+
 
     def Menu(self, choix, surface):
         if choix == "principal":
@@ -308,24 +306,27 @@ class Game:
         while alive:
 
             for wall in self.walls:
-                pygame.draw.circle(self.screen, (255, 255, 255, 255), (wall[0], wall[1]), 25, 0)
+                pygame.draw.circle(self.screen, (0, 0, 0), (wall[0], wall[1]), 25, 0)
             for sprite in self.enemy_group:
                 sprite.save_location()
-                pygame.draw.circle(self.screen, (255, 228, 96, 255), (sprite.position[0], sprite.position[1]), 20, 0)
+                pygame.draw.circle(self.screen, (255, 228, 96), (sprite.position[0], sprite.position[1]), 20, 0)
             for bullet in self.bullet_group:
-                pygame.draw.circle(self.screen, (0, 0, 0, 255), (bullet.pos[0], bullet.pos[1]), 5, 0)
+                pygame.draw.circle(self.screen, (0, 0, 0), (bullet.pos[0], bullet.pos[1]), 5, 0)
             self.update()
             self.screen.fill((0, 0, 0))
             self.screen.blit(self.map, (0, 0))
             self.player.save_location()
             self.handle_input()
             self.player_group.draw(self.screen)
+            pygame.draw.circle(self.screen, (self.player.health_display()),
+                               (self.player.position[0], self.player.position[1]), 15, 0)
             self.bullet_group.draw(self.screen)
             self.enemy_group.draw(self.screen)
             self.UI.render(self.screen)
             self.new_vague()
             self.damages()
-            print(self.player.health)
+
+
 
             # update the full display surface to the screen
             pygame.display.flip()

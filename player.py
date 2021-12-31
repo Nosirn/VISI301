@@ -28,6 +28,7 @@ class Player(pygame.sprite.Sprite):
         self.coin = 0
         self.health = 5
         self.score = 0
+        self.filtre = 0
         self.reload_sound = mixer.Sound('son/reload.wav')
         self.weapon = self.pistol()
 
@@ -61,6 +62,17 @@ class Player(pygame.sprite.Sprite):
 
         if self.regen_auto():
             self.health += 1
+
+        if self.health == 5:
+            self.filtre = 0
+        elif self.health == 4:
+            self.filtre = 10
+        elif self.health == 3:
+            self.filtre = 20
+        elif self.health == 2:
+            self.filtre = 30
+        elif self.health == 1:
+            self.filtre = 40
 
     def move_back(self):
         '''Replace le joueur à son ancienne position si il atteint une zone de collision'''
@@ -174,4 +186,15 @@ class Player(pygame.sprite.Sprite):
             self.cooldown_regen()
             return self.cool_down_regen == 0
 
-
+    def health_display(self):
+        if self.health == 5:
+            res = (249,228,183)
+        elif self.health == 4:
+            res = (255,153,153)
+        elif self.health == 3:
+            res = (255,102,102)
+        elif self.health == 2:
+            res = (255, 53, 53)
+        elif self.health == 1:
+            res = (255, 0, 0)
+        return res
