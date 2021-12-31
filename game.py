@@ -49,6 +49,7 @@ class Game:
         self.bullets = []
         self.walls = []
 
+        #définition des cercles qui représente les mur
         for i in range(0,801, 800):
             for j in range(20,800, 20):
                 self.walls.append([i, j])
@@ -56,8 +57,31 @@ class Game:
             for j in range(20,800, 20):
                 self.walls.append([j, i])
         self.walls.append([300,300])
-        self.walls.append([460, 300])
-        self.walls.append([325, 280])
+        self.walls.append([320, 280])
+        self.walls.append([340, 280])
+        self.walls.append([360, 280])
+        self.walls.append([380, 280])
+        self.walls.append([400, 280])
+        self.walls.append([420, 280])
+        self.walls.append([440, 280])
+        self.walls.append([470, 300])
+
+        self.walls.append([605, 160])
+        self.walls.append([625, 160])
+        self.walls.append([640, 160])
+
+        self.walls.append([606, 594])
+
+        self.walls.append([130, 160])
+        self.walls.append([145, 133])
+        self.walls.append([160, 133])
+        self.walls.append([175, 133])
+        self.walls.append([200, 133])
+        self.walls.append([220, 133])
+        self.walls.append([240, 133])
+        self.walls.append([275, 160])
+
+        self.walls.append([380, 400])
 
         # calques
         self.player_group = pygame.sprite.Group()
@@ -162,13 +186,15 @@ class Game:
             self.player.change_weapon('smg')
             self.player.weapon = self.player.smg()
         if pressed[pygame.K_r]:
+            self.wait = "push"
+        if self.wait == "push" and not pressed[pygame.K_r]:
             self.player.reload()
+            self.wait = "no_push"
         if pressed[pygame.K_c]:
             self.Menu("shop", self.screen)
         if pressed[pygame.K_ESCAPE]:
             self.Menu("options", self.screen)
-        # if pressed[pygame.K_x]:
-        #   self.UI.toggleInventory()
+
 
     def vagues(self, taille_vague):
         for i in range(0, taille_vague):
@@ -199,16 +225,6 @@ class Game:
                 collision = True
         return collision
 
-    def collision_zombie(self):
-        i = 0
-        for zombie in self.enemy_group:
-            for other_zombie in self.enemy_group:
-                distance = math.hypot(zombie.position[0] - other_zombie.position[0], zombie.position[1] - other_zombie.position[1])
-                if distance <= zombie.radius*2 and distance > 0:
-                    zombie.move_back()
-                    other_zombie.move_back()
-                    print("ok")
-
     def update(self):
         self.player_group.update()
         self.bullet_group.update()
@@ -234,7 +250,24 @@ class Game:
             self.player.move_back()
         for enemy in self.enemy_group:
             if self.collision_circle(enemy, self.walls):
-                enemy.move_back()
+                col = enemy.position
+                if col[0] >= enemy.position[0] and col[1] >= enemy.position[1]:
+                    enemy.position[0] -= 2
+                    enemy.position[1] -= 2
+                    enemy.position[1] += 1
+                elif col[0] >= enemy.position[0] and col[1] <= enemy.position[1]:
+                    enemy.position[0] -= 2
+                    enemy.position[1] += 2
+                    enemy.position[0] += 1
+                elif col[0] <= enemy.position[0] and col[1] <= enemy.position[1]:
+                    enemy.position[0] += 2
+                    enemy.position[1] -= 2
+                    enemy.position[1] += 1
+                elif col[0] <= enemy.position[0] and col[1] >= enemy.position[1]:
+                    enemy.position[0] += 2
+                    enemy.position[1] += 2
+                    enemy.position[0] += 1
+
 
     def Menu(self, choix, surface):
         if choix == "principal":
@@ -258,9 +291,9 @@ class Game:
             distance = math.hypot(self.player.position[0] - zombie.position[0], self.player.position[1] - zombie.position[1])
             if distance <= self.player.radius + zombie.radius and zombie.cooldown == 0:
                 self.player.health = self.player.health - 1
+                mixer.Sound('son/croc.wav').play()
                 zombie.cooldown = 1
                 
-                print(self.player.health)
 
     def dead(self):
         if self.player.health <= 0:
@@ -270,7 +303,6 @@ class Game:
         return living
 
     def start(self):
-        print("lancement de la partie")
         clock = pygame.time.Clock()
         # Game loop
         alive = True
@@ -294,7 +326,7 @@ class Game:
             self.UI.render(self.screen)
             self.new_vague()
             self.damages()
-            self.collision_zombie()
+            print(self.player.health)
 
             # update the full display surface to the screen
             pygame.display.flip()

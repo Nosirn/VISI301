@@ -17,6 +17,7 @@ class Enemy(pygame.sprite.Sprite):
         self.old_position = self.position.copy()
         self.speed = 1
         self.cooldown = 0
+        self.stuck = False
 
     def get_position(self):
         return [self.position[0], self.position[1]]
@@ -32,9 +33,8 @@ class Enemy(pygame.sprite.Sprite):
     def move_down(self): self.change_position[1] += self.speed
 
     def update(self, player_x, player_y):
-        self.rect.topleft = self.position
+        self.rect.center = self.position
         self.follow_player(player_x,player_y)
-
 
     # Replace le sprite à son ancienne position si il atteind une zone de collision
     def move_back(self):

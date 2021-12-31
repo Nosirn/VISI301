@@ -17,11 +17,6 @@ class Bullet(pygame.sprite.Sprite):
         self.bullet_state = "ready"
         self.dir = self.parametre_tir()
 
-
-    def get_position(self):
-        print(self.position[0], self.position[1])
-        return [self.position[0], self.position[1]]
-
     def reset_position(self, pos):
         self.position = pos.copy()
         self.old_position = self.position.copy()
@@ -30,20 +25,16 @@ class Bullet(pygame.sprite.Sprite):
 
     def update(self):
         px = self.pos[0]
-        # print(self.bullet.position[0])
         py = self.pos[1]
-        # print(self.bullet.position[1])
 
         px += 6 * self.vector[0]
         py += 6 * self.vector[1]
         self.pos = [px, py]
         self.rect.topleft = self.pos
 
-        #Condition de la disparition de la balle
+        # Disparition de la balle si elle sort de l'écran
         if self.rect.topleft[0] > 800 or self.rect.topleft[0] < 0 or self.rect.topleft[1] > 800 or self.rect.topleft[1] < 0:
             self.kill()
-        #elif pygame.sprite.collide_rect(self.image, self.enemy)
-
 
     def rotate(self, img, rect, angle):
         self.rot_image = pygame.transform.rotate(img, angle)
@@ -59,7 +50,6 @@ class Bullet(pygame.sprite.Sprite):
             i = abs(self.vector[1])
 
         self.vector = [self.vector[0] / i, self.vector[1] / i]
-        #print(self.vector)
         return self.vector
 
     def vector_bullet(self):
@@ -74,7 +64,6 @@ class Bullet(pygame.sprite.Sprite):
 
         # On calcul le vecteur de direction de la balle
         vect = [posMouseX - posBulletX, posMouseY - posBulletY]
-        #print(vect)
         return vect
 
     def touche(self):
