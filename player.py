@@ -112,7 +112,7 @@ class Player(pygame.sprite.Sprite):
         '''capacité du chargeur'''
         self.capacity_max = 7
         self.weapon_name = "pistol"
-        self.delai = 10
+        self.delai = 20
         self.bullet_sound = mixer.Sound('son/tir.wav')
 
 

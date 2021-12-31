@@ -114,7 +114,7 @@ class Game:
         # Menu shop
         self.shop = pygame_menu.Menu("Shop", self.screenDim[0], self.screenDim[1],
                                         theme=pygame_menu.themes.THEME_GREEN)
-        self.shop.add.button('munition pistolet', self.player.buy_munition)
+        self.shop.add.button('clic pour acheter 10 munitions supplémentaires', self.player.buy_munition)
         self.shop.add.button('retour au jeu', self.start)
 
         # Menu des options
@@ -268,6 +268,10 @@ class Game:
                     enemy.position[1] += 2
                     enemy.position[0] += 1
 
+        if self.player.munition == 0:
+            self.UI.no_mun = True
+        else:
+            self.UI.no_mun = False
 
     def Menu(self, choix, surface):
         if choix == "principal":

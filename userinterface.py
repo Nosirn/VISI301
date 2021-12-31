@@ -16,20 +16,22 @@ class UserInterface:
         self.largefont = pygame.font.SysFont("Verdana", 40)
 
         self.inventory = Inventory(mun, coin, smg_mag, pistol_mag)
-        #self.inventoryRender = True
 
         self.text = self.regularfont.render("point : ", True, self.color_black)
         self.score = self.regularfont.render("0", True, self.color_black)
         self.vague = self.regularfont.render(str("vague :"), True, self.color_black)
+        self.aide = self.smallfont.render(str("vous pouvez appuyer sur C pour acheter des munitions"), True, self.color_black)
         self.num_vague = self.regularfont.render(str(vague-1), True, self.color_black)
-
+        self.no_mun = False
+    
     def render(self, screen):
-        #if self.inventoryRender == True:
         self.inventory.render(screen)
         screen.blit(self.text, (660, 15))
         screen.blit(self.score, (740, 15))
         screen.blit(self.vague, (660, 45))
         screen.blit(self.num_vague, (740, 45))
+        if self.no_mun == True:
+            screen.blit(self.aide, (200, 700))
 
     def update(self, mun, coin, point,smg_mag, pistol_mag, vague):
         self.inventory = Inventory(mun, coin, smg_mag, pistol_mag)
@@ -39,10 +41,4 @@ class UserInterface:
         self.vague = self.regularfont.render(str("vague :"), True, self.color_black)
         self.num_vague = self.regularfont.render(str(vague-1), True, self.color_black)
     
-    # def toggleInventory(self):
-    #     if self.inventoryRender == True:
-    #         self.inventoryRender = False
-    #     elif self.inventoryRender == False:
-    #         self.inventoryRender = True
-
 
